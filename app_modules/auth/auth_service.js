@@ -1,4 +1,5 @@
 import { sequelize } from '../../config/db.js'
+import jwt from "jsonwebtoken";
 
 export const createUser = async (username, password) => {
     const query = `INSERT INTO "Users" (username, password, is_revoked) VALUES (:username, :password, :is_revoked) RETURNING username`;

@@ -1,11 +1,11 @@
 import express from 'express';
-import { signup, login, revoke, profile } from '../controllers/auth_controller.js';
-import { verifyToken } from '../middleware/auth_middleware.js';
+import { signup, login, revoke, profile } from './auth_controller.js';
+import { verifyToken } from './auth_middleware.js';
 
 const router = express.Router();
 router.post('/signup', signup);
 router.post('/login', login);
-router.post('/revoke', revoke);
+router.put('/revoke', revoke);
 
 //protected route
 router.get('/profile', verifyToken, profile);

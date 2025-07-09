@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createUser, findUserByUsername, isUserAccessRevoked, revokeAccess, getUserNameFromToken } from "../services/auth_service.js";
+import { createUser, findUserByUsername, isUserAccessRevoked, revokeAccess, getUserNameFromToken } from "./auth_service.js";
 
 export const signup = async (req, res) => {
     const { username, password } = req.body;
