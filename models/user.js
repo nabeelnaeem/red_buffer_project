@@ -44,7 +44,7 @@ export default (sequelize) => {
   }, {
     sequelize,
     modelName: 'User',
-    tableName: 'Users',
+    tableName: 'users',
     timestamps: true,
     paranoid: true
   });

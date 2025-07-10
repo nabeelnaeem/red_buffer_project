@@ -1,7 +1,7 @@
 /** @type {import('sequelize-cli').Migration} */
 export default {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Order_item', {
+    await queryInterface.createTable('order_item', {
       order_item_id: {
         allowNull: false,
         primaryKey: true,
@@ -48,6 +48,6 @@ export default {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Order_item');
+    await queryInterface.dropTable('order_item');
   }
 };

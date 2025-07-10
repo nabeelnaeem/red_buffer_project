@@ -25,7 +25,7 @@ export default (sequelize) => {
   }, {
     sequelize,
     modelName: 'Category',
-    tableName: 'Categories',
+    tableName: 'categories',
     timestamps: true,
     paranoid: true
   });

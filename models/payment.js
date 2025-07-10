@@ -35,7 +35,7 @@ export default (sequelize) => {
   }, {
     sequelize,
     modelName: 'Payment',
-    tableName: 'Payments',
+    tableName: 'payments',
     timestamps: true,
     paranoid: true
   });

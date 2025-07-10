@@ -2,12 +2,12 @@
 export default {
   async up(queryInterface, Sequelize) {
     // Products.category_id → Categories.category_id
-    await queryInterface.addConstraint('Products', {
+    await queryInterface.addConstraint('products', {
       fields: ['category_id'],
       type: 'foreign key',
       name: 'fk_products_category',
       references: {
-        table: 'Categories',
+        table: 'categories',
         field: 'category_id'
       },
       onUpdate: 'CASCADE',
@@ -15,12 +15,12 @@ export default {
     });
 
     // Orders.user_id → Users.user_id
-    await queryInterface.addConstraint('Orders', {
+    await queryInterface.addConstraint('orders', {
       fields: ['user_id'],
       type: 'foreign key',
       name: 'fk_orders_user',
       references: {
-        table: 'Users',
+        table: 'users',
         field: 'user_id'
       },
       onUpdate: 'CASCADE',
@@ -28,12 +28,12 @@ export default {
     });
 
     // OrderItems.order_id → Orders.order_id
-    await queryInterface.addConstraint('Order_item', {
+    await queryInterface.addConstraint('order_item', {
       fields: ['order_id'],
       type: 'foreign key',
       name: 'fk_orderitems_order',
       references: {
-        table: 'Orders',
+        table: 'orders',
         field: 'order_id'
       },
       onUpdate: 'CASCADE',
@@ -41,12 +41,12 @@ export default {
     });
 
     // OrderItems.product_id → Products.product_id
-    await queryInterface.addConstraint('Order_item', {
+    await queryInterface.addConstraint('order_item', {
       fields: ['product_id'],
       type: 'foreign key',
       name: 'fk_orderitems_product',
       references: {
-        table: 'Products',
+        table: 'products',
         field: 'product_id'
       },
       onUpdate: 'CASCADE',
@@ -54,12 +54,12 @@ export default {
     });
 
     // Payments.order_id → Orders.order_id
-    await queryInterface.addConstraint('Payments', {
+    await queryInterface.addConstraint('payments', {
       fields: ['order_id'],
       type: 'foreign key',
       name: 'fk_payments_order',
       references: {
-        table: 'Orders',
+        table: 'orders',
         field: 'order_id'
       },
       onUpdate: 'CASCADE',
@@ -67,12 +67,12 @@ export default {
     });
 
     // Shippings.order_id → Orders.order_id
-    await queryInterface.addConstraint('Shippings', {
+    await queryInterface.addConstraint('shippings', {
       fields: ['order_id'],
       type: 'foreign key',
       name: 'fk_shippings_order',
       references: {
-        table: 'Orders',
+        table: 'orders',
         field: 'order_id'
       },
       onUpdate: 'CASCADE',
@@ -80,12 +80,12 @@ export default {
     });
 
     // Reviews.user_id → Users.user_id
-    await queryInterface.addConstraint('Reviews', {
+    await queryInterface.addConstraint('reviews', {
       fields: ['user_id'],
       type: 'foreign key',
       name: 'fk_reviews_user',
       references: {
-        table: 'Users',
+        table: 'users',
         field: 'user_id'
       },
       onUpdate: 'CASCADE',
@@ -93,12 +93,12 @@ export default {
     });
 
     // Reviews.product_id → Products.product_id
-    await queryInterface.addConstraint('Reviews', {
+    await queryInterface.addConstraint('reviews', {
       fields: ['product_id'],
       type: 'foreign key',
       name: 'fk_reviews_product',
       references: {
-        table: 'Products',
+        table: 'products',
         field: 'product_id'
       },
       onUpdate: 'CASCADE',
@@ -106,12 +106,12 @@ export default {
     });
 
     // Reviews.order_item_id → Order_item.order_item_id
-    await queryInterface.addConstraint('Reviews', {
+    await queryInterface.addConstraint('reviews', {
       fields: ['order_item_id'],
       type: 'foreign key',
       name: 'fk_reviews_order_item',
       references: {
-        table: 'Order_item',
+        table: 'order_item',
         field: 'order_item_id'
       },
       onUpdate: 'CASCADE',
@@ -120,14 +120,14 @@ export default {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeConstraint('Products', 'fk_products_category');
-    await queryInterface.removeConstraint('Orders', 'fk_orders_user');
-    await queryInterface.removeConstraint('Order_item', 'fk_orderitems_order');
-    await queryInterface.removeConstraint('Order_item', 'fk_orderitems_product');
-    await queryInterface.removeConstraint('Payments', 'fk_payments_order');
-    await queryInterface.removeConstraint('Shippings', 'fk_shippings_order');
-    await queryInterface.removeConstraint('Reviews', 'fk_reviews_user');
-    await queryInterface.removeConstraint('Reviews', 'fk_reviews_product');
-    await queryInterface.removeConstraint('Reviews', 'fk_reviews_order_item');
+    await queryInterface.removeConstraint('products', 'fk_products_category');
+    await queryInterface.removeConstraint('orders', 'fk_orders_user');
+    await queryInterface.removeConstraint('order_item', 'fk_orderitems_order');
+    await queryInterface.removeConstraint('order_item', 'fk_orderitems_product');
+    await queryInterface.removeConstraint('payments', 'fk_payments_order');
+    await queryInterface.removeConstraint('shippings', 'fk_shippings_order');
+    await queryInterface.removeConstraint('reviews', 'fk_reviews_user');
+    await queryInterface.removeConstraint('reviews', 'fk_reviews_product');
+    await queryInterface.removeConstraint('reviews', 'fk_reviews_order_item');
   }
 };
