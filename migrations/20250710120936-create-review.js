@@ -1,8 +1,8 @@
 /** @type {import('sequelize-cli').Migration} */
 export default {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Orders', {
-      order_id: {
+    await queryInterface.createTable('Reviews', {
+      review_id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
@@ -12,8 +12,20 @@ export default {
         type: Sequelize.UUID,
         allowNull: false,
       },
-      date: {
-        type: Sequelize.DATE,
+      product_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
+      },
+      order_item_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
+      },
+      rating: {
+        type: Sequelize.NUMBER,
+        allowNull: false
+      },
+      comment: {
+        type: Sequelize.TEXT,
         allowNull: false
       },
       createdAt: {
@@ -34,6 +46,6 @@ export default {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Orders');
+    await queryInterface.dropTable('Reviews');
   }
 };
