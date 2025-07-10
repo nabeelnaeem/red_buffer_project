@@ -3,7 +3,10 @@ import { Model, DataTypes } from "sequelize";
 export default (sequelize) => {
   class Order extends Model {
     static associate(models) {
-
+      Order.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
+      Order.hasMany(models.OrderItem, { foreignKey: 'order_id', as: 'orderItems' });
+      Order.hasOne(models.Shipping, { foreignKey: 'order_id', as: 'shipping' });
+      Order.hasOne(models.Payment, { foreignKey: 'order_id', as: 'payment' });
     }
   }
   Order.init({

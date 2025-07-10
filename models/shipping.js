@@ -3,7 +3,7 @@ import { Model, DataTypes } from "sequelize";
 export default (sequelize) => {
   class Shipping extends Model {
     static associate(models) {
-
+      Shipping.belongsTo(models.Order, { foreignKey: 'order_id', as: 'order' });
     }
   }
   Shipping.init({

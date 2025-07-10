@@ -3,7 +3,9 @@ import { Model, DataTypes } from "sequelize";
 export default (sequelize) => {
   class OrderItem extends Model {
     static associate(models) {
-
+      OrderItem.belongsTo(models.Order, { foreignKey: 'order_id', as: 'order' });
+      OrderItem.belongsTo(models.Product, { foreignKey: 'product_id', as: 'product' });
+      OrderItem.hasOne(models.Review, { foreignKey: 'order_item_id', as: 'review' });
     }
   }
   OrderItem.init({
@@ -23,17 +25,19 @@ export default (sequelize) => {
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 1,
     },
     amount: {
       type: DataTypes.DOUBLE,
       allowNull: false,
+      defaultValue: 0,
     }
   }, {
     sequelize,
-    modelName: 'Order',
-    tableName: 'Orders',
+    modelName: 'OrderItem',
+    tableName: 'Order_item',
     timestamps: true,
     paranoid: true
   });
-  return Category;
+  return OrderItem;
 }

@@ -18,11 +18,17 @@ export default {
       },
       description: {
         type: Sequelize.TEXT,
+        allowNull: true,
+      },
+      stock: {
+        type: Sequelize.INTEGER,
         allowNull: false,
+        defaultValue: 0
       },
       price: {
-        type: Sequelize.TEXT,
-        allowNull: false
+        type: Sequelize.DOUBLE,
+        allowNull: false,
+        defaultValue: 0
       },
       createdAt: {
         allowNull: false,

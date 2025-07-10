@@ -9,12 +9,12 @@ export default {
         defaultValue: Sequelize.UUIDV4
       },
       name: {
-        type: Sequelize.UUID,
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       description: {
         type: Sequelize.TEXT,
-        allowNull: false
+        allowNull: true
       },
       createdAt: {
         allowNull: false,

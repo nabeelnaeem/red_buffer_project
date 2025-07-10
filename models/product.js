@@ -3,10 +3,9 @@ import { Model, DataTypes } from "sequelize";
 export default (sequelize) => {
   class Product extends Model {
     static associate(models) {
-      Product.belongsTo(models.Category, {
-        foreignKey: 'category_id',
-        as: 'category'
-      });
+      Product.belongsTo(models.Category, { foreignKey: 'category_id', as: 'category' });
+      Product.hasMany(models.OrderItem, { foreignKey: 'product_id', as: 'orderItems' });
+      Product.hasMany(models.Review, { foreignKey: 'product_id', as: 'reviews' });
     }
   }
   Product.init({
@@ -25,7 +24,12 @@ export default (sequelize) => {
     },
     description: {
       type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    stock: {
+      type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 0,
     },
     price: {
       type: DataTypes.DOUBLE,

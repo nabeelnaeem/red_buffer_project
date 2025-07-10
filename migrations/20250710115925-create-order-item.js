@@ -19,6 +19,7 @@ export default {
       quantity: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        defaultValue: 1,
       },
       product_id: {
         type: Sequelize.UUID,
@@ -26,7 +27,8 @@ export default {
       },
       amount: {
         type: Sequelize.DOUBLE,
-        allowNull: false
+        allowNull: false,
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,

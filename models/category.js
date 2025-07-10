@@ -3,20 +3,19 @@ import { Model, DataTypes } from "sequelize";
 export default (sequelize) => {
   class Category extends Model {
     static associate(models) {
-      Category.hasMany(models.Product, {
-        foreignKey: 'category_id',
-        as: 'products'
-      });
+      Category.hasMany(models.Product, { foreignKey: 'category_id', as: 'products' });
+
     }
   }
   Category.init({
     category_id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
-      primaryKey: true
+      primaryKey: true,
+      allowNull: false,
     },
     name: {
-      type: DataTypes.UUID,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     description: {

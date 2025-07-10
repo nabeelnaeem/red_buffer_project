@@ -3,7 +3,9 @@ import { Model, DataTypes } from "sequelize";
 export default (sequelize) => {
   class Review extends Model {
     static associate(models) {
-
+      Review.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
+      Review.belongsTo(models.Product, { foreignKey: 'product_id', as: 'product' });
+      Review.belongsTo(models.OrderItem, { foreignKey: 'order_item_id', as: 'orderItem' });
     }
   }
   Review.init({
