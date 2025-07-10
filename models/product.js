@@ -3,7 +3,10 @@ import { Model, DataTypes } from "sequelize";
 export default (sequelize) => {
   class Product extends Model {
     static associate(models) {
-      // define associations here if needed
+      Product.belongsTo(models.Category, {
+        foreignKey: 'category_id',
+        as: 'category'
+      });
     }
   }
   Product.init({

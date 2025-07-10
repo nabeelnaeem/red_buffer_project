@@ -11,7 +11,6 @@ export default {
       name: {
         type: Sequelize.UUID,
         allowNull: false,
-        unique: true,
       },
       description: {
         type: Sequelize.TEXT,
