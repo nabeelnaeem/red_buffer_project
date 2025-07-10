@@ -11,7 +11,7 @@ const SUCCESSFUL_LOGIN_MESSAGE = 'Login successful';
 const LOGIN_FAILED_MESSAGE = 'Login failed';
 //Signup 
 export const signup = async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, email } = req.body;
 
     try {
         const userExists = await findUserByUsername(username);
@@ -19,7 +19,7 @@ export const signup = async (req, res) => {
             return res.status(400).json({ error: USER_ALREADY_EXISTS_MESSAGE });
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await createUser(username, hashedPassword);
+        const user = await createUser(username, hashedPassword, email);
 
         res.json({ message: USER_CREATED_MESSAGE, user });
     } catch (error) {
