@@ -1,5 +1,11 @@
 import { sequelize } from '../../config/db.js'
 import jwt from "jsonwebtoken";
+const ACCESS_REVOKED_MESSAGE = 'Access is revoked';
+const USER_NOT_EXISTS_MESSAGE = 'User not exists';
+const USER_NOT_FOUND_MESSAGE = 'User not found';
+const STATUS_ALREADY_REVOKED_MESSAGE = 'User status is already revoked';
+
+
 
 export const createUser = async (username, password) => {
     const query = `INSERT INTO "Users" (username, password, is_revoked) VALUES (:username, :password, :is_revoked) RETURNING username`;
@@ -27,23 +33,22 @@ export const isUserAccessRevoked = async (username) => {
 export const revokeAccess = async (username) => {
     const userExists = await findUserByUsername(username);
     if (!userExists) {
-        return 'User not exists';
+        return USER_NOT_EXISTS_MESSAGE;
     }
 
     const revokedUser = await isUserAccessRevoked(username);
     if (revokedUser)
-        return 'User status is already revoked';
-
+        return STATUS_ALREADY_REVOKED_MESSAGE;
 
     const query = `UPDATE "Users" SET is_revoked = :is_revoked WHERE username = :username RETURNING username`;
     const [result] = await sequelize.query(query, {
         replacements: { username, is_revoked: true },
     });
     if (result !== undefined) {
-        return 'Access is revoked';
+        return ACCESS_REVOKED_MESSAGE;
     }
     else {
-        return 'User not found';
+        return USER_NOT_FOUND_MESSAGE;
     }
 }
 
