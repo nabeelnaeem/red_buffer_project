@@ -1,10 +1,9 @@
 import express from 'express';
 import authRoutes from './app_modules/auth/auth_route.js';
 import { createDB, sequelize } from './config/db.js';
-import { initUserTable } from "./app_modules/auth/auth_model.js"
 
+// await initUserTable();
 await createDB();
-await initUserTable();
 const app = express();
 const PORT = 3000;
 
