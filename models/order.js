@@ -19,6 +19,14 @@ export default (sequelize) => {
     date: {
       type: DataTypes.DATE,
       allowNull: false,
+    },
+    status: {
+      type: DataTypes.ENUM,
+      allowNull: false,
+    },
+    amount: {
+      type: DataTypes.DOUBLE,
+      allowNull: false,
     }
   }, {
     sequelize,
@@ -27,5 +35,5 @@ export default (sequelize) => {
     timestamps: true,
     paranoid: true
   });
-  return Category;
+  return Order;
 }

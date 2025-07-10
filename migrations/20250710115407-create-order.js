@@ -16,6 +16,14 @@ export default {
         type: Sequelize.DATE,
         allowNull: false
       },
+      status: {
+        type: Sequelize.ENUM,
+        allowNull: false
+      },
+      amount: {
+        type: Sequelize.DOUBLE,
+        allowNull: false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
