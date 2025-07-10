@@ -2,7 +2,7 @@ import { Sequelize } from "sequelize";
 import pkg from 'pg';
 const { Client } = pkg;
 
-const dbName = 'user_db';
+const dbName = 'ecomerce_db';
 const dbUser = 'admin';
 const dbPass = 'admin';
 const dbHost = 'localhost';
