@@ -24,7 +24,7 @@ export default (sequelize) => {
     },
     email: {
       type: DataTypes.TEXT,
-      allowNull: true,
+      allowNull: false,
       unique: true
     },
     address: {

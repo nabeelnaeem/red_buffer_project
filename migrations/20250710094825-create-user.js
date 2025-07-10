@@ -19,7 +19,7 @@ export default {
       },
       email: {
         type: Sequelize.TEXT,
-        allowNull: true,
+        allowNull: false,
         unique: true
       },
       address: {
