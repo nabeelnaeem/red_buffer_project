@@ -1,38 +1,34 @@
 /** @type {import('sequelize-cli').Migration} */
 export default {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('users', {
-      user_id: {
+    await queryInterface.createTable('order_item', {
+      order_item_id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4
       },
-      username: {
-        type: Sequelize.TEXT,
+      order_id: {
+        type: Sequelize.UUID,
         allowNull: false,
-        unique: true
       },
-      password: {
-        type: Sequelize.TEXT,
-        allowNull: false
-      },
-      email: {
-        type: Sequelize.TEXT,
+      product_id: {
+        type: Sequelize.UUID,
         allowNull: false,
-        unique: true
       },
-      address: {
-        type: Sequelize.TEXT,
-        allowNull: true
+      quantity: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
       },
-      phone: {
-        type: Sequelize.TEXT,
-        allowNull: true
+      product_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
       },
-      is_revoked: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
+      amount: {
+        type: Sequelize.DOUBLE,
+        allowNull: false,
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,
@@ -52,6 +48,6 @@ export default {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('order_item');
   }
 };

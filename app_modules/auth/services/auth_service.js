@@ -9,7 +9,7 @@ const STATUS_ALREADY_REVOKED_MESSAGE = 'User status is already revoked';
 
 export const createUser = async (username, password, email) => {
     const query = `
-    INSERT INTO "Users" (user_id, username, password, email, address, phone, is_revoked, "createdAt", "updatedAt")
+    INSERT INTO "users" (user_id, username, password, email, address, phone, is_revoked, "createdAt", "updatedAt")
     VALUES ( gen_random_uuid(), :username, :password, :email, :address, :phone, :is_revoked, NOW(), NOW())
   `;
 
@@ -22,7 +22,7 @@ export const createUser = async (username, password, email) => {
 
 
 export const findUserByUsername = async (username) => {
-    const query = `SELECT * FROM "Users" WHERE username = :username`;
+    const query = `SELECT * FROM "users" WHERE username = :username`;
     const [result] = await sequelize.query(query, {
         replacements: { username },
     });
@@ -30,7 +30,7 @@ export const findUserByUsername = async (username) => {
 };
 
 export const isUserAccessRevoked = async (username) => {
-    const query = `SELECT * FROM "Users" WHERE username = :username AND is_revoked = :is_revoked`;
+    const query = `SELECT * FROM "users" WHERE username = :username AND is_revoked = :is_revoked`;
     const [result] = await sequelize.query(query, {
         replacements: { username, is_revoked: true },
     });
@@ -46,7 +46,7 @@ export const revokeAccess = async (username) => {
     if (revokedUser)
         return STATUS_ALREADY_REVOKED_MESSAGE;
 
-    const query = `UPDATE "Users" SET is_revoked = :is_revoked WHERE username = :username`;
+    const query = `UPDATE "users" SET is_revoked = :is_revoked WHERE username = :username`;
     const [result] = await sequelize.query(query, {
         replacements: { username, is_revoked: true },
     });

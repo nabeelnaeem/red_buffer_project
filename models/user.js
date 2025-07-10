@@ -4,6 +4,8 @@ export default (sequelize) => {
   class User extends Model {
     static associate(models) {
       // define associations here if needed
+      User.hasMany(models.Order, { foreignKey: 'user_id', as: 'orders' });
+      User.hasMany(models.Review, { foreignKey: 'user_id', as: 'reviews' });
     }
   }
 
@@ -42,7 +44,7 @@ export default (sequelize) => {
   }, {
     sequelize,
     modelName: 'User',
-    tableName: 'Users',
+    tableName: 'users',
     timestamps: true,
     paranoid: true
   });

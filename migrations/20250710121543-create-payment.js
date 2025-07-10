@@ -1,38 +1,32 @@
 /** @type {import('sequelize-cli').Migration} */
 export default {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('users', {
-      user_id: {
+    await queryInterface.createTable('payments', {
+      payment_id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4
       },
-      username: {
-        type: Sequelize.TEXT,
+      order_id: {
+        type: Sequelize.UUID,
         allowNull: false,
-        unique: true
       },
-      password: {
-        type: Sequelize.TEXT,
+      date: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      method: {
+        type: Sequelize.ENUM('credit_card', 'debit_card', 'cash_on_delivery', 'bank_transfer', 'easypaisa', 'jazzcash'),
+        allowNull: false,
+      },
+      amount: {
+        type: Sequelize.DOUBLE,
         allowNull: false
       },
-      email: {
-        type: Sequelize.TEXT,
-        allowNull: false,
-        unique: true
-      },
-      address: {
-        type: Sequelize.TEXT,
-        allowNull: true
-      },
-      phone: {
-        type: Sequelize.TEXT,
-        allowNull: true
-      },
-      is_revoked: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
+      status: {
+        type: Sequelize.ENUM('pending', 'paid', 'failed', 'refunded', 'cancelled'),
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
@@ -52,6 +46,6 @@ export default {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('payments');
   }
 };

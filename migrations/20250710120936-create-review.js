@@ -1,38 +1,32 @@
 /** @type {import('sequelize-cli').Migration} */
 export default {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('users', {
-      user_id: {
+    await queryInterface.createTable('reviews', {
+      review_id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4
       },
-      username: {
-        type: Sequelize.TEXT,
+      user_id: {
+        type: Sequelize.UUID,
         allowNull: false,
-        unique: true
       },
-      password: {
-        type: Sequelize.TEXT,
-        allowNull: false
-      },
-      email: {
-        type: Sequelize.TEXT,
+      product_id: {
+        type: Sequelize.UUID,
         allowNull: false,
-        unique: true
       },
-      address: {
+      order_item_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
+      },
+      rating: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      comment: {
         type: Sequelize.TEXT,
-        allowNull: true
-      },
-      phone: {
-        type: Sequelize.TEXT,
-        allowNull: true
-      },
-      is_revoked: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,
@@ -52,6 +46,6 @@ export default {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('reviews');
   }
 };
