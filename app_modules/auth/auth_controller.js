@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createUser, findUserByUsername, isUserAccessRevoked, revokeAccess, getUserNameFromToken, isUserNameOrToken } from "./auth_service.js";
+import { createUser, findUserByUsername, isUserAccessRevoked, revokeAccess, getUserNameFromToken, isUserNameOrToken } from "./services/auth_service.js";
 
 const USER_ALREADY_EXISTS_MESSAGE = 'User already exists';
 const USER_CREATED_MESSAGE = 'User created';

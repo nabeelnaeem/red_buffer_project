@@ -1,4 +1,4 @@
-import { sequelize } from '../../config/db.js'
+import { sequelize } from '../../../config/db.js'
 import jwt from "jsonwebtoken";
 const ACCESS_REVOKED_MESSAGE = 'Access is revoked';
 const USER_NOT_EXISTS_MESSAGE = 'User not exists';
@@ -8,12 +8,18 @@ const STATUS_ALREADY_REVOKED_MESSAGE = 'User status is already revoked';
 
 
 export const createUser = async (username, password) => {
-    const query = `INSERT INTO "Users" (username, password, is_revoked) VALUES (:username, :password, :is_revoked)`;
+    const query = `
+    INSERT INTO "Users" (user_id, username, password, email, address, phone, is_revoked, "createdAt", "updatedAt")
+    VALUES ( gen_random_uuid(), :username, :password, :email, :address, :phone, :is_revoked, NOW(), NOW())
+  `;
+
     const [result] = await sequelize.query(query, {
-        replacements: { username, password, is_revoked: false }
+        replacements: { username, password, email: null, address: null, phone: null, is_revoked: false }
     });
-    return result[0];
-}
+
+    return result[0]; // Returns the inserted row
+};
+
 
 export const findUserByUsername = async (username) => {
     const query = `SELECT * FROM "Users" WHERE username = :username`;

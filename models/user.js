@@ -24,7 +24,7 @@ export default (sequelize) => {
     },
     email: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: true,
       unique: true
     },
     address: {
@@ -34,6 +34,10 @@ export default (sequelize) => {
     phone: {
       type: DataTypes.TEXT,
       allowNull: true
+    },
+    is_revoked: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     }
   }, {
     sequelize,

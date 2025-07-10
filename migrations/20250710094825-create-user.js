@@ -19,7 +19,7 @@ export default {
       },
       email: {
         type: Sequelize.TEXT,
-        allowNull: false,
+        allowNull: true,
         unique: true
       },
       address: {
@@ -29,6 +29,10 @@ export default {
       phone: {
         type: Sequelize.TEXT,
         allowNull: true
+      },
+      is_revoked: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       },
       createdAt: {
         allowNull: false,
