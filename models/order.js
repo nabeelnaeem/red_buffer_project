@@ -21,7 +21,7 @@ export default (sequelize) => {
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM,
+      type: DataTypes.DataTypes.ENUM('pending', 'shipped', 'delivered', 'cancelled'),
       allowNull: false,
     },
     amount: {

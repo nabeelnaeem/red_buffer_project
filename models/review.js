@@ -25,12 +25,12 @@ export default (sequelize) => {
       allowNull: false,
     },
     rating: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     comment: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: true,
     }
   }, {
     sequelize,

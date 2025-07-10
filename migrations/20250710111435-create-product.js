@@ -11,7 +11,6 @@ export default {
       category_id: {
         type: Sequelize.UUID,
         allowNull: false,
-        unique: true,
       },
       name: {
         type: Sequelize.TEXT,

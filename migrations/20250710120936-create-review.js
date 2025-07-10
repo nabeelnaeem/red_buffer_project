@@ -21,12 +21,12 @@ export default {
         allowNull: false,
       },
       rating: {
-        type: Sequelize.NUMBER,
+        type: Sequelize.INTEGER,
         allowNull: false
       },
       comment: {
         type: Sequelize.TEXT,
-        allowNull: false
+        allowNull: true
       },
       createdAt: {
         allowNull: false,

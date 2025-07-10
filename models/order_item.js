@@ -21,7 +21,7 @@ export default (sequelize) => {
       allowNull: false,
     },
     quantity: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     amount: {

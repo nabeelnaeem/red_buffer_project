@@ -21,7 +21,7 @@ export default (sequelize) => {
       allowNull: false,
     },
     method: {
-      type: DataTypes.ENUM,
+      type: DataTypes.ENUM('standard', 'express', 'overnight', 'pickup'),
       allowNull: false,
     },
     tracking_id: {
@@ -29,7 +29,7 @@ export default (sequelize) => {
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM,
+      type: DataTypes.ENUM('pending', 'shipped', 'in_transit', 'delivered', 'returned', 'cancelled'),
       allowNull: false,
     },
   }, {

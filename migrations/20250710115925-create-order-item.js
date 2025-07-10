@@ -17,7 +17,7 @@ export default {
         allowNull: false,
       },
       quantity: {
-        type: Sequelize.NUMBER,
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       product_id: {

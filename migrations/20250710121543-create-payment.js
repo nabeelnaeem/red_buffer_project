@@ -17,7 +17,7 @@ export default {
         allowNull: false,
       },
       method: {
-        type: Sequelize.ENUM,
+        type: Sequelize.ENUM('credit_card', 'debit_card', 'cash_on_delivery', 'bank_transfer', 'easypaisa', 'jazzcash'),
         allowNull: false,
       },
       amount: {
@@ -25,7 +25,7 @@ export default {
         allowNull: false
       },
       status: {
-        type: Sequelize.ENUM,
+        type: Sequelize.ENUM('pending', 'paid', 'failed', 'refunded', 'cancelled'),
         allowNull: false
       },
       createdAt: {
