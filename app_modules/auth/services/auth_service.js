@@ -7,14 +7,14 @@ const STATUS_ALREADY_REVOKED_MESSAGE = 'User status is already revoked';
 
 
 
-export const createUser = async (username, password) => {
+export const createUser = async (username, password, email) => {
     const query = `
     INSERT INTO "Users" (user_id, username, password, email, address, phone, is_revoked, "createdAt", "updatedAt")
     VALUES ( gen_random_uuid(), :username, :password, :email, :address, :phone, :is_revoked, NOW(), NOW())
   `;
 
     const [result] = await sequelize.query(query, {
-        replacements: { username, password, email: null, address: null, phone: null, is_revoked: false }
+        replacements: { username, password, email, address: null, phone: null, is_revoked: false }
     });
 
     return result[0]; // Returns the inserted row
