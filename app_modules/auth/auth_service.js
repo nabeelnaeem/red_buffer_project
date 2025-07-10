@@ -25,11 +25,26 @@ export const isUserAccessRevoked = async (username) => {
     return result[0];
 }
 export const revokeAccess = async (username) => {
-    console.log("Revoked called", username);
-    const query = `UPDATE "Users" SET is_revoked = :is_revoked WHERE username = :username`;
+    const userExists = await findUserByUsername(username);
+    if (!userExists) {
+        return 'User not exists';
+    }
+
+    const revokedUser = await isUserAccessRevoked(username);
+    if (revokedUser)
+        return 'User status is already revoked';
+
+
+    const query = `UPDATE "Users" SET is_revoked = :is_revoked WHERE username = :username RETURNING username`;
     const [result] = await sequelize.query(query, {
         replacements: { username, is_revoked: true },
     });
+    if (result !== undefined) {
+        return 'Access is revoked';
+    }
+    else {
+        return 'User not found';
+    }
 }
 
 export const getUserNameFromToken = (req) => {
@@ -37,4 +52,14 @@ export const getUserNameFromToken = (req) => {
     const token = authHeader.split(' ')[1];
     const username = jwt.decode(token).username;
     return username;
+}
+
+export const isUserNameOrToken = (req) => {
+    const { userInfo } = req.body;
+    if (jwt.decode(userInfo)) {
+        return jwt.decode(userInfo).username;
+    }
+    else {
+        return userInfo;
+    }
 }

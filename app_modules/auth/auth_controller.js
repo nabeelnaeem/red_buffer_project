@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createUser, findUserByUsername, isUserAccessRevoked, revokeAccess, getUserNameFromToken } from "./auth_service.js";
+import { createUser, findUserByUsername, isUserAccessRevoked, revokeAccess, getUserNameFromToken, isUserNameOrToken } from "./auth_service.js";
 
+//Signup 
 export const signup = async (req, res) => {
     const { username, password } = req.body;
 
@@ -19,6 +20,8 @@ export const signup = async (req, res) => {
     }
 };
 
+
+//Login
 export const login = async (req, res) => {
     const { username, password } = req.body;
 
@@ -35,19 +38,31 @@ export const login = async (req, res) => {
         if (!match)
             return res.status(401).json({ error: 'Invalid Credentials' });
 
-        const token = jwt.sign({ username: user.username }, 'abcd', { expiresIn: '1m' })
+        const token = jwt.sign({ username: user.username }, 'abcd', { expiresIn: '15m' });
         res.json({ message: 'Login successful', token });
     } catch (error) {
         res.status(500).json({ error: 'Login failed' + error });
     }
 }
 
+//Revoke
 export const revoke = async (req, res) => {
-    const username = getUserNameFromToken(req);
-    await revokeAccess(username);
-    res.json({ message: `${username}, access is revoked.` });
+    //This will get signedin username
+    const loggedInUserName = getUserNameFromToken(req);
+    //This will get username or token from body
+    const username = isUserNameOrToken(req);
+
+    if (loggedInUserName === username)
+        return res.status(400).json({ message: `Cannot revoke access to yourself ${username}` });
+    else {
+        await revokeAccess(username)
+            .then(value => {
+                res.json({ message: `${username}, ${value}` });
+            })
+    }
 }
 
+//Profile (Protected)
 export const profile = async (req, res) => {
     const username = getUserNameFromToken(req);
     const revokedUser = await isUserAccessRevoked(username);
