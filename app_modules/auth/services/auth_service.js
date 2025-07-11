@@ -6,7 +6,6 @@ const USER_NOT_FOUND_MESSAGE = 'User not found';
 const STATUS_ALREADY_REVOKED_MESSAGE = 'User status is already revoked';
 
 
-
 export const createUser = async (username, password, email) => {
     const query = `
     INSERT INTO "users" (user_id, username, password, email, address, phone, is_revoked, "createdAt", "updatedAt")
@@ -17,9 +16,8 @@ export const createUser = async (username, password, email) => {
         replacements: { username, password, email, address: null, phone: null, is_revoked: false }
     });
 
-    return result[0]; // Returns the inserted row
+    return result[0];
 };
-
 
 export const findUserByUsername = async (username) => {
     const query = `SELECT * FROM "users" WHERE username = :username`;
