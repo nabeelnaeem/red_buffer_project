@@ -29,6 +29,14 @@ export const findUserByUsername = async (username) => {
     return result[0];
 };
 
+export const findUserByEmail = async (email) => {
+    const query = `SELECT * FROM "users" WHERE email = :email`;
+    const [result] = await sequelize.query(query, {
+        replacements: { email },
+    });
+    return result[0];
+};
+
 export const isUserAccessRevoked = async (username) => {
     const query = `SELECT * FROM "users" WHERE username = :username AND is_revoked = :is_revoked`;
     const [result] = await sequelize.query(query, {
