@@ -1,6 +1,7 @@
 import express from 'express';
 import authRoutes from './app_modules/auth/auth_route.js';
 import { createDB, sequelize } from './config/db.js';
+import cors from 'cors';
 
 // await initUserTable();
 await createDB();
@@ -8,6 +9,8 @@ const app = express();
 const PORT = 3000;
 
 // Middleware
+app.use(cors());
+//For now allowing all regions
 app.use(express.json());
 
 // Routes
