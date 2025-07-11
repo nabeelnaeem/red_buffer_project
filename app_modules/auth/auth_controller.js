@@ -1,8 +1,9 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createUser, findUserByUsername, isUserAccessRevoked, revokeAccess, getUserNameFromToken, isUserNameOrToken } from "./services/auth_service.js";
+import { createUser, findUserByUsername, isUserAccessRevoked, revokeAccess, getUserNameFromToken, isUserNameOrToken, findUserByEmail } from "./services/auth_service.js";
 
-const USER_ALREADY_EXISTS_MESSAGE = 'User already exists';
+const USERNAME_ALREADY_EXISTS_MESSAGE = 'User name already exists';
+const EMAIL_ALREADY_EXISTS_MESSAGE = 'Email already exists';
 const USER_CREATED_MESSAGE = 'User created';
 const USER_NOT_FOUND_MESSAGE = 'User not found';
 const USER_STATUS_REVOKED_MESSAGE = 'User status is revoked';
@@ -14,9 +15,13 @@ export const signup = async (req, res) => {
     const { username, password, email } = req.body;
 
     try {
-        const userExists = await findUserByUsername(username);
-        if (userExists)
-            return res.status(400).json({ error: USER_ALREADY_EXISTS_MESSAGE });
+        const isExistingUserName = await findUserByUsername(username);
+        if (isExistingUserName)
+            return res.status(400).json({ error: USERNAME_ALREADY_EXISTS_MESSAGE });
+
+        const isExistingEmail = await findUserByEmail(email)
+        if (isExistingEmail)
+            return res.status(400).json({ error: EMAIL_ALREADY_EXISTS_MESSAGE });
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await createUser(username, hashedPassword, email);
