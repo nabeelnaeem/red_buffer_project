@@ -1,4 +1,4 @@
-
+import * as productService from './services/product_service.js';
 
 //Messages
 const PRODUCT_CREATED_MESSAGE = 'Product created';
@@ -9,6 +9,7 @@ const PRODUCT_DELETED_MESSAGE = 'Product dreated';
 export const createProduct = async (req, res) => {
 
     try {
+
         //Create Product Logic
         res.status(201).json({ message: PRODUCT_CREATED_MESSAGE });
     } catch (error) {
@@ -18,8 +19,9 @@ export const createProduct = async (req, res) => {
 
 export const getAllProducts = async (req, res) => {
     try {
-        //fetch from DB and return
-        res.json([]);
+        const products = await productService.getAllProducts();
+        if (products)
+            res.json(products);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
