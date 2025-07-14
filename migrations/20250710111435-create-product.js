@@ -30,6 +30,11 @@ export default {
         allowNull: false,
         defaultValue: 0
       },
+      image_url: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+        defaultValue: 'http://product.jpeg'
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
