@@ -4,6 +4,7 @@ import * as productService from './services/product_service.js';
 const PRODUCT_CREATED_MESSAGE = 'Product created';
 const PRODUCT_UPDATED_MESSAGE = 'Product updated';
 const PRODUCT_DELETED_MESSAGE = 'Product dreated';
+const PRODUCT_NOT_UPDATED_MESSAGE = 'Product not found or updated';
 
 
 export const createProduct = async (req, res) => {
@@ -30,18 +31,26 @@ export const getAllProducts = async (req, res) => {
 export const getProductById = async (req, res) => {
     try {
         const { id } = req.params;
-        //Fetch product by id;
-        res.json({});
+        const product = await productService.getProductById(id);
+        res.json(product);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
+
 export const updateProduct = async (req, res) => {
     try {
         const { id } = req.params;
         const data = req.body;
-        res.json({ message: PRODUCT_UPDATED_MESSAGE });
+        const updatedProduct = await productService.updateProduct(id, data);
+
+        if (!updatedProduct) {
+            return res.status(404).json({ message: PRODUCT_NOT_UPDATED_MESSAGE });
+            console.log("NO PRODUCT")
+        }
+        res.json(updatedProduct);
+        console.log("Updated PRODUCT")
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
