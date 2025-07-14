@@ -1,7 +1,8 @@
 import express from 'express';
-import authRoutes from './app_modules/auth/auth_route.js';
 import { createDB, sequelize } from './config/db.js';
 import cors from 'cors';
+import authRoutes from './app_modules/auth/auth_route.js';
+import productRoutes from './app_modules/product/product_route.js'
 
 // await initUserTable();
 await createDB();
@@ -15,6 +16,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/product', authRoutes);
 
 // DB Connection & Server Start
 sequelize.authenticate()
