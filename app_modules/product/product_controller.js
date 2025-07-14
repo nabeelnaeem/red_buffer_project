@@ -31,8 +31,13 @@ export const createProduct = async (req, res) => {
 
 export const getAllProducts = async (req, res) => {
     try {
-        const { name } = req.query;
-        const products = await productService.getAllProducts(name);
+        const name = req.query.name;
+        const sortBy = req.query.sortBy;
+        const sortOrder = req.query.sortOrder;
+        let page = parseInt(req.query.page) || 1;
+        let limit = parseInt(req.query.limit) || 10;
+
+        const products = await productService.getAllProducts({ name, sortBy, sortOrder, page, limit });
         if (products)
             res.json(products);
     } catch (error) {

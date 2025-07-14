@@ -2,15 +2,21 @@ import { sequelize } from '../../../config/db.js';
 
 const TABLE_NAME = "products";
 
-export const getAllProducts = async (name) => {
+export const getAllProducts = async ({ name, sortBy = 'name', sortOrder = 'asc', page = 1, limit = 10 }) => {
+    const allowedSortFields = ['name', 'price', 'stock', 'createdAt'];
+    const sortField = allowedSortFields.includes(sortBy) ? sortBy : 'name';
+    const sortDirection = sortOrder.toLowerCase() === 'desc' ? 'DESC' : 'ASC';
+    const offset = (page - 1) * limit;
+
     let query = `SELECT * FROM ${TABLE_NAME}`;
-    const replacements = {};
+    const replacements = { limit, offset };
 
     if (name) {
         query += ` WHERE LOWER(name) LIKE :name`;
         replacements.name = `%${name.toLowerCase()}%`;
     }
 
+    query += ` ORDER BY "${sortField}" ${sortDirection} LIMIT :limit OFFSET :offset`;
     const [rows] = await sequelize.query(query, { replacements });
     return rows;
 };
