@@ -4,8 +4,8 @@ import * as productService from './services/product_service.js';
 const PRODUCT_CREATED_MESSAGE = 'Product created';
 const PRODUCT_NOT_FOUND_MESSAGE = 'Product not found';
 const PRODUCT_UPDATED_MESSAGE = 'Product updated';
-const PRODUCT_DELETED_MESSAGE = 'Product dreated';
-const PRODUCT_NOT_UPDATED_MESSAGE = 'Product not found or updated';
+const PRODUCT_DELETED_MESSAGE = 'Product deleted';
+const PRODUCT_NOT_UPDATED_MESSAGE = 'No product found or updated';
 const CATEGORY_REQUIRED_MESSAGE = 'Category is required';
 const NAME_REQUIRED_MESSAGE = 'Name is required';
 const IMAGE_URL_REQUIRED_MESSAGE = 'Image URL is required';
@@ -44,7 +44,7 @@ export const getProductById = async (req, res) => {
     try {
         const { id } = req.params;
         const isProductExisting = await productService.ifExistingProduct(id);
-        if (!isProductExisting) return res.status(404).json({ error: PRODUCT_NOT_FOUND_MESSAGE })
+        if (!isProductExisting) return res.status(404).json({ error: PRODUCT_NOT_FOUND_MESSAGE });
 
         const product = await productService.getProductById(id);
         res.json(product);
@@ -57,6 +57,9 @@ export const getProductById = async (req, res) => {
 export const updateProduct = async (req, res) => {
     try {
         const { id } = req.params;
+        const isProductExisting = await productService.ifExistingProduct(id);
+        if (!isProductExisting) return res.status(404).json({ error: PRODUCT_NOT_FOUND_MESSAGE });
+
         const data = req.body;
         const updatedProduct = await productService.updateProduct(id, data);
 
@@ -72,6 +75,9 @@ export const updateProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
+        const isProductExisting = await productService.ifExistingProduct(id);
+        if (!isProductExisting) return res.status(404).json({ error: PRODUCT_NOT_FOUND_MESSAGE });
+
         await productService.deleteProduct(id)
             .then((deletedProduct) => {
                 res.json({ message: PRODUCT_DELETED_MESSAGE });
