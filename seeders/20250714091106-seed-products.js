@@ -10,6 +10,7 @@ export default {
         description: 'Latest 5G smartphone',
         stock: 50,
         price: 699.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -20,6 +21,7 @@ export default {
         description: 'Noise-cancelling wireless earbuds',
         stock: 80,
         price: 129.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -30,6 +32,7 @@ export default {
         description: 'Fitness tracking smartwatch',
         stock: 60,
         price: 199.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -42,6 +45,7 @@ export default {
         description: 'Classic American novel',
         stock: 100,
         price: 9.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -52,6 +56,7 @@ export default {
         description: 'Book on software craftsmanship',
         stock: 40,
         price: 34.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -62,6 +67,7 @@ export default {
         description: 'Self-help book for behavior change',
         stock: 70,
         price: 14.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -74,6 +80,7 @@ export default {
         description: '100% cotton T-shirt',
         stock: 200,
         price: 12.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -84,6 +91,7 @@ export default {
         description: 'Warm fleece hoodie',
         stock: 150,
         price: 29.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -94,6 +102,7 @@ export default {
         description: 'Denim jeans for kids',
         stock: 90,
         price: 19.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -106,6 +115,7 @@ export default {
         description: '1000W microwave oven',
         stock: 30,
         price: 99.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -116,6 +126,7 @@ export default {
         description: 'Split AC 1.5 Ton',
         stock: 20,
         price: 499.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -126,6 +137,7 @@ export default {
         description: 'Portable vacuum cleaner',
         stock: 40,
         price: 89.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -138,6 +150,7 @@ export default {
         description: 'Creative Lego building blocks',
         stock: 100,
         price: 59.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -148,6 +161,7 @@ export default {
         description: 'Rechargeable remote-controlled car',
         stock: 70,
         price: 39.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -158,6 +172,7 @@ export default {
         description: 'Soft teddy bear toy',
         stock: 120,
         price: 24.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -170,6 +185,7 @@ export default {
         description: 'Professional size 5 football',
         stock: 60,
         price: 19.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -180,6 +196,7 @@ export default {
         description: 'Wooden cricket bat',
         stock: 40,
         price: 34.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -190,6 +207,7 @@ export default {
         description: 'Lightweight racket for beginners',
         stock: 35,
         price: 59.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -202,6 +220,7 @@ export default {
         description: 'Gentle foaming face wash',
         stock: 200,
         price: 6.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -212,6 +231,7 @@ export default {
         description: 'Natural nourishing hair oil',
         stock: 100,
         price: 8.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -222,6 +242,7 @@ export default {
         description: 'Pack of 6 matte lipsticks',
         stock: 90,
         price: 14.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -234,6 +255,7 @@ export default {
         description: 'Ergonomic adjustable chair',
         stock: 25,
         price: 149.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -244,6 +266,7 @@ export default {
         description: 'Sturdy wooden dining table',
         stock: 10,
         price: 299.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -254,6 +277,7 @@ export default {
         description: '3-seater with cushions',
         stock: 8,
         price: 499.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -266,6 +290,7 @@ export default {
         description: '1kg long grain organic rice',
         stock: 100,
         price: 4.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -276,6 +301,7 @@ export default {
         description: 'Sunflower oil 1L',
         stock: 60,
         price: 5.99,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -286,6 +312,7 @@ export default {
         description: '5kg whole wheat flour',
         stock: 50,
         price: 6.49,
+        image_url: 'product.jpeg',
         createdAt: new Date(),
         updatedAt: new Date()
       }
