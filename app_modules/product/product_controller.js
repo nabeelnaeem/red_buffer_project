@@ -20,7 +20,8 @@ export const createProduct = async (req, res) => {
 
 export const getAllProducts = async (req, res) => {
     try {
-        const products = await productService.getAllProducts();
+        const { name } = req.query;
+        const products = await productService.getAllProducts(name);
         if (products)
             res.json(products);
     } catch (error) {

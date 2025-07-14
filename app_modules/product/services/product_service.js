@@ -2,9 +2,16 @@ import { sequelize } from '../../../config/db.js';
 
 const TABLE_NAME = "products";
 
-export const getAllProducts = async () => {
-    const query = `SELECT * FROM ${TABLE_NAME}`;
-    const [rows] = await sequelize.query(query);
+export const getAllProducts = async (name) => {
+    let query = `SELECT * FROM ${TABLE_NAME}`;
+    const replacements = {};
+
+    if (name) {
+        query += ` WHERE LOWER(name) LIKE :name`;
+        replacements.name = `%${name.toLowerCase()}%`;
+    }
+
+    const [rows] = await sequelize.query(query, { replacements });
     return rows;
 };
 
