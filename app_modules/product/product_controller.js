@@ -2,17 +2,28 @@ import * as productService from './services/product_service.js';
 
 //Messages
 const PRODUCT_CREATED_MESSAGE = 'Product created';
+const PRODUCT_NOT_FOUND_MESSAGE = 'Product not found';
 const PRODUCT_UPDATED_MESSAGE = 'Product updated';
 const PRODUCT_DELETED_MESSAGE = 'Product dreated';
 const PRODUCT_NOT_UPDATED_MESSAGE = 'Product not found or updated';
+const CATEGORY_REQUIRED_MESSAGE = 'Category is required';
+const NAME_REQUIRED_MESSAGE = 'Name is required';
+const IMAGE_URL_REQUIRED_MESSAGE = 'Image URL is required';
 
 
 export const createProduct = async (req, res) => {
 
     try {
+        let { category_id, name, description, stock, price, image_url } = req.body;
 
-        //Create Product Logic
-        res.status(201).json({ message: PRODUCT_CREATED_MESSAGE });
+        if (!category_id) res.status(400).json({ message: CATEGORY_REQUIRED_MESSAGE }); //will assign a default category here later
+        if (!name) res.status(400).json({ message: NAME_REQUIRED_MESSAGE });
+        if (!image_url) res.status(400).json({ message: IMAGE_URL_REQUIRED_MESSAGE }); //may be a default url later 
+
+        await productService.createProduct(category_id, name, description, stock, price, image_url)
+            .then((product) => {
+                res.status(201).json({ message: PRODUCT_CREATED_MESSAGE, product });
+            })
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -32,6 +43,9 @@ export const getAllProducts = async (req, res) => {
 export const getProductById = async (req, res) => {
     try {
         const { id } = req.params;
+        const isProductExisting = await productService.ifExistingProduct(id);
+        if (!isProductExisting) return res.status(404).json({ error: PRODUCT_NOT_FOUND_MESSAGE })
+
         const product = await productService.getProductById(id);
         res.json(product);
     } catch (error) {
@@ -48,10 +62,8 @@ export const updateProduct = async (req, res) => {
 
         if (!updatedProduct) {
             return res.status(404).json({ message: PRODUCT_NOT_UPDATED_MESSAGE });
-            console.log("NO PRODUCT")
         }
-        res.json(updatedProduct);
-        console.log("Updated PRODUCT")
+        res.json(PRODUCT_UPDATED_MESSAGE, updatedProduct);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -60,7 +72,13 @@ export const updateProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        res.json({ message: PRODUCT_DELETED_MESSAGE });
+        await productService.deleteProduct(id)
+            .then((deletedProduct) => {
+                res.json({ message: PRODUCT_DELETED_MESSAGE });
+            })
+            .catch(err => {
+                res.status(400).json({ error: err.message });
+            })
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

@@ -49,3 +49,44 @@ export const updateProduct = async (product_id, data) => {
     const [result] = await sequelize.query(query, { replacements });
     return result[0];
 };
+
+export const createProduct = async (category_id, name, description, stock, price, image_url) => {
+    const query = `
+        INSERT INTO ${TABLE_NAME} (
+            product_id, category_id, name, description, stock, price, image_url, "createdAt", "updatedAt")
+        VALUES (gen_random_uuid(), :category_id, :name, :description, :stock, :price, :image_url, NOW(), NOW())
+        RETURNING *;
+        
+    `;
+
+    const replacements = {
+        category_id: category_id,
+        name: name,
+        description: description || null,
+        stock: stock || 0,
+        price: price || 0,
+        image_url: image_url || null
+    };
+
+    const [result] = await sequelize.query(query, { replacements });
+    return result[0];
+};
+
+export const deleteProduct = async (product_id) => {
+    const query = `DELETE FROM ${TABLE_NAME} 
+                    WHERE product_id = :product_id
+    `;
+    const replacements = {
+        product_id
+    }
+    const [result] = await sequelize.query(query, { replacements });
+    return result[0];
+}
+
+export const ifExistingProduct = async (product_id) => {
+    const query = `SELECT * FROM ${TABLE_NAME} WHERE product_id = :product_id`;
+    const [result] = await sequelize.query(query, {
+        replacements: { product_id }
+    });
+    return result[0];
+}
