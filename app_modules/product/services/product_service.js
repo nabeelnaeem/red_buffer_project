@@ -2,38 +2,48 @@ import { sequelize } from '../../../config/db.js';
 
 const TABLE_NAME = "products";
 
-export const getAllProducts = async ({ name, sortBy = 'name', sortOrder = 'asc', page = 1, limit = 10 }) => {
-    const allowedSortFields = ['name', 'price', 'stock', 'createdAt'];
+export const getAllProducts = async ({
+    name,
+    sortBy = 'name',
+    sortOrder = 'asc',
+    page = 1,
+    limit = 10,
+}) => {
+    const allowedSortFields = ['name', 'price', 'stock', 'createdAt', 'rating'];
     const sortField = allowedSortFields.includes(sortBy) ? sortBy : 'name';
     const sortDirection = sortOrder.toLowerCase() === 'desc' ? 'DESC' : 'ASC';
     const offset = (page - 1) * limit;
-
     const replacements = { limit, offset };
+
     let baseQuery = `
-        FROM products p
-        JOIN categories c ON p.category_id = c.category_id
-        LEFT JOIN reviews r ON p.product_id = r.product_id
-        `;
+    FROM products p
+    JOIN categories c ON p.category_id = c.category_id
+    LEFT JOIN reviews r ON p.product_id = r.product_id
+  `;
+
     if (name) {
         baseQuery += ` WHERE LOWER(p.name) LIKE :name`;
         replacements.name = `%${name.toLowerCase()}%`;
     }
 
     const query = `
-                    SELECT 
-                    p.*, 
-                    c.name AS category,
-                    ROUND(AVG(r.rating), 1) AS rating,
-                    COUNT(r.rating) as rating_count
-                    ${baseQuery}
-                    GROUP BY p.product_id, c.name
-                    ORDER BY "${sortField}" ${sortDirection}
-                    LIMIT :limit OFFSET :offset
-                `;
+    SELECT * FROM (
+      SELECT 
+        p.*, 
+        c.name AS category_name,
+        ROUND(AVG(r.rating), 1) AS rating,
+        COUNT(r.rating) AS rating_count
+      ${baseQuery}
+      GROUP BY p.product_id, c.name
+    ) AS sub
+    ORDER BY ${sortField === 'rating' ? 'rating' : `"${sortField}"`} ${sortDirection}
+    LIMIT :limit OFFSET :offset
+  `;
 
-    const countQuery = `SELECT COUNT(DISTINCT p.product_id) AS total
+    const countQuery = `
+    SELECT COUNT(DISTINCT p.product_id) AS total
     ${baseQuery}
-    `;
+  `;
 
     const [[{ total }]] = await sequelize.query(countQuery, { replacements });
     const [products] = await sequelize.query(query, { replacements });
