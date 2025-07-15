@@ -31,7 +31,7 @@ export const getAllProducts = async ({
       SELECT 
         p.*, 
         c.name AS category_name,
-        ROUND(AVG(r.rating), 1) AS rating,
+        COALESCE(ROUND(AVG(r.rating), 1), 0) AS rating,
         COUNT(r.rating) AS rating_count
       ${baseQuery}
       GROUP BY p.product_id, c.name

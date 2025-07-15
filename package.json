@@ -10,7 +10,7 @@
     "migrate:undo": "npx sequelize-cli db:migrate:undo:all",
     "seed-data": "npx sequelize-cli db:seed:all",
     "seed-undo": "npx sequelize-cli db:seed:undo:all",
-    "config": "node config/setup.js && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
+    "config": "node config/setup.js && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all && node --watch app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
