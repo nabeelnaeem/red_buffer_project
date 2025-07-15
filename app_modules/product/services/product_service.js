@@ -16,16 +16,16 @@ export const getAllProducts = async ({
     const replacements = { limit, offset };
 
     let baseQuery = `
-    FROM products p
+    FROM ${TABLE_NAME} p
     JOIN categories c ON p.category_id = c.category_id
     LEFT JOIN reviews r ON p.product_id = r.product_id
   `;
 
     if (name) {
-        baseQuery += ` WHERE LOWER(p.name) LIKE :name`;
+        baseQuery += ` WHERE p.name ILIKE :name`;
         replacements.name = `%${name.toLowerCase()}%`;
     }
-
+    // ORDER BY ${sortField === 'rating' ? 'rating' : `"${sortField}"`} ${sortDirection}
     const query = `
     SELECT * FROM (
       SELECT 
@@ -36,7 +36,7 @@ export const getAllProducts = async ({
       ${baseQuery}
       GROUP BY p.product_id, c.name
     ) AS sub
-    ORDER BY ${sortField === 'rating' ? 'rating' : `"${sortField}"`} ${sortDirection}
+    ORDER BY ${sortField} ${sortDirection}
     LIMIT :limit OFFSET :offset
   `;
 
@@ -64,7 +64,7 @@ export const getProductById = async (product_id) => {
     return result[0];
 }
 
-export const updateProduct = async (product_id, data) => {
+export const updateProduct = async (product_id, category_id, name, description, stock, price, image_url) => {
     const query = `UPDATE ${TABLE_NAME} 
                     SET 
                         name = :name, 
@@ -79,12 +79,12 @@ export const updateProduct = async (product_id, data) => {
                     `;
     const replacements = {
         product_id,
-        name: data.name,
-        description: data.description,
-        stock: data.stock,
-        price: data.price,
-        image_url: data.image_url,
-        category_id: data.category_id
+        name: name,
+        description: description || '',
+        stock: stock || 0,
+        price: price || 0,
+        image_url: image_url || '',
+        category_id: category_id
     };
 
     const [result] = await sequelize.query(query, { replacements });

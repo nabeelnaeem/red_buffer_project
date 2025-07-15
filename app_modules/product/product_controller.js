@@ -16,9 +16,9 @@ export const createProduct = async (req, res) => {
     try {
         const { category_id, name, description, stock, price, image_url } = req.body;
 
-        if (!category_id) res.status(400).json({ message: CATEGORY_REQUIRED_MESSAGE }); //will assign a default category here later
+        if (!category_id) res.status(400).json({ message: CATEGORY_REQUIRED_MESSAGE });
         if (!name) res.status(400).json({ message: NAME_REQUIRED_MESSAGE });
-        if (!image_url) res.status(400).json({ message: IMAGE_URL_REQUIRED_MESSAGE }); //may be a default url later 
+        if (!image_url) res.status(400).json({ message: IMAGE_URL_REQUIRED_MESSAGE });
 
         await productService.createProduct(category_id, name, description, stock, price, image_url)
             .then((product) => {
@@ -65,9 +65,12 @@ export const updateProduct = async (req, res) => {
         const isProductExisting = await productService.ifExistingProduct(id);
         if (!isProductExisting) return res.status(404).json({ error: PRODUCT_NOT_FOUND_MESSAGE });
 
-        const data = req.body;
-        const updatedProduct = await productService.updateProduct(id, data);
+        const { category_id, name, description, stock, price, image_url } = req.body;
+        if (!category_id) res.status(400).json({ message: CATEGORY_REQUIRED_MESSAGE });
+        if (!name) res.status(400).json({ message: NAME_REQUIRED_MESSAGE });
 
+
+        const updatedProduct = await productService.updateProduct(id, category_id, name, description, stock, price, image_url);
         if (!updatedProduct) {
             return res.status(404).json({ message: PRODUCT_NOT_UPDATED_MESSAGE });
         }
