@@ -1,8 +1,13 @@
 // scripts/setup.js (ESM version)
 import dotenv from 'dotenv';
 import fs from 'fs';
+import { createDB } from './db.js';
 
 dotenv.config();
+
+// await initUserTable();
+await createDB();
+
 
 const config = {
     development: {
