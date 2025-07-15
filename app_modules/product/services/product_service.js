@@ -23,7 +23,8 @@ export const getAllProducts = async ({ name, sortBy = 'name', sortOrder = 'asc',
                     SELECT 
                     p.*, 
                     c.name AS category,
-                    ROUND(AVG(r.rating), 1) AS rating
+                    ROUND(AVG(r.rating), 1) AS rating,
+                    COUNT(r.rating) as rating_count
                     ${baseQuery}
                     GROUP BY p.product_id, c.name
                     ORDER BY "${sortField}" ${sortDirection}
