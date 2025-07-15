@@ -3,316 +3,679 @@
 export default {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('products', [
-      {
-        product_id: '55ea145a-f505-4bc0-b8d7-60a5f689ea0e',
-        category_id: '11111111-1111-1111-1111-111111111111',
-        name: 'Smartphone X200',
-        description: 'Latest 5G smartphone',
-        stock: 50,
-        price: 699.99,
-        image_url: 'product.jpeg',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        product_id: '6e9f52b5-90ca-4e9f-9477-2aebe1641adb',
-        category_id: '11111111-1111-1111-1111-111111111111',
-        name: 'Bluetooth Earbuds',
-        description: 'Noise-cancelling wireless earbuds',
-        stock: 80,
-        price: 129.99,
-        image_url: 'product.jpeg',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        product_id: '191d40bd-e976-4ba7-b3ed-d297157eab66',
-        category_id: '11111111-1111-1111-1111-111111111111',
-        name: 'Smartwatch Pro',
-        description: 'Fitness tracking smartwatch',
-        stock: 60,
-        price: 199.99,
-        image_url: 'product.jpeg',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-
-      // Books
-      {
-        product_id: '976a84be-062a-4232-b502-c8400c915f80',
-        category_id: '22222222-2222-2222-2222-222222222222',
-        name: 'The Great Gatsby',
-        description: 'Classic American novel',
-        stock: 100,
-        price: 9.99,
-        image_url: 'product.jpeg',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        product_id: 'a94b2798-947c-4321-be5f-3bf929fcd741',
-        category_id: '22222222-2222-2222-2222-222222222222',
-        name: 'Clean Code',
-        description: 'Book on software craftsmanship',
-        stock: 40,
-        price: 34.99,
-        image_url: 'product.jpeg',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        product_id: '98433389-eb81-4676-a00a-be44443652de',
-        category_id: '22222222-2222-2222-2222-222222222222',
-        name: 'Atomic Habits',
-        description: 'Self-help book for behavior change',
-        stock: 70,
-        price: 14.99,
-        image_url: 'product.jpeg',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-
-      // Clothing
-      {
-        product_id: 'e1348165-7c58-49aa-9480-4c9ab3f9116e',
-        category_id: '33333333-3333-3333-3333-333333333333',
-        name: 'Men’s T-Shirt',
-        description: '100% cotton T-shirt',
-        stock: 200,
-        price: 12.99,
-        image_url: 'product.jpeg',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
+      // Clothing (33333333-3333-3333-3333-333333333333)
       {
         product_id: 'd8bd8deb-a9b8-4aab-b24d-7b3482f2b00f',
         category_id: '33333333-3333-3333-3333-333333333333',
-        name: 'Women’s Hoodie',
-        description: 'Warm fleece hoodie',
+        name: "Women's Hoodie",
+        description: "Warm fleece hoodie",
         stock: 150,
         price: 29.99,
-        image_url: 'product.jpeg',
+        image_url: "product.jpeg",
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         product_id: 'ff13c98e-72b0-40b7-9ebe-7e42582d355c',
         category_id: '33333333-3333-3333-3333-333333333333',
-        name: 'Kids’ Jeans',
-        description: 'Denim jeans for kids',
+        name: "Kids' Jeans",
+        description: "Denim jeans for kids",
         stock: 90,
         price: 19.99,
-        image_url: 'product.jpeg',
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        product_id: 'a1b2c3d4-e5f6-7890-a1b2-c3d4e5f67890',
+        category_id: '33333333-3333-3333-3333-333333333333',
+        name: "Men's T-Shirt",
+        description: "Cotton crew neck t-shirt",
+        stock: 200,
+        price: 14.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Electronics (11111111-1111-1111-1111-111111111111)
+      {
+        product_id: 'b2c3d4e5-f6a1-4b2c-3d4e-5f6a1b2c3d4e',
+        category_id: '11111111-1111-1111-1111-111111111111',
+        name: "Wireless Earbuds",
+        description: "Bluetooth 5.0 noise-canceling",
+        stock: 75,
+        price: 79.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        product_id: 'c3d4e5f6-a1b2-4c3d-4e5f-6a1b2c3d4e5f',
+        category_id: '11111111-1111-1111-1111-111111111111',
+        name: "Smart Watch",
+        description: "Fitness tracker with heart rate monitor",
+        stock: 50,
+        price: 129.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Books (22222222-2222-2222-2222-222222222222)
+      {
+        product_id: 'd4e5f6a1-b2c3-4d4e-5f6a-1b2c3d4e5f6a',
+        category_id: '22222222-2222-2222-2222-222222222222',
+        name: "Science Fiction Novel",
+        description: "Bestselling sci-fi paperback",
+        stock: 120,
+        price: 12.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Home Appliances (44444444-4444-4444-4444-444444444444)
+      {
+        product_id: 'e5f6a1b2-c3d4-4e5f-6a1b-2c3d4e5f6a1b',
+        category_id: '44444444-4444-4444-4444-444444444444',
+        name: "Air Fryer",
+        description: "5.5 qt digital air fryer",
+        stock: 45,
+        price: 89.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Toys (55555555-5555-5555-5555-555555555555)
+      {
+        product_id: 'f6a1b2c3-d4e5-4f6a-1b2c-3d4e5f6a1b2c',
+        category_id: '55555555-5555-5555-5555-555555555555',
+        name: "Building Blocks Set",
+        description: "200-piece construction set",
+        stock: 80,
+        price: 24.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Sports (66666666-6666-6666-6666-666666666666)
+      {
+        product_id: '1a2b3c4d-5e6f-41a2-b3c4-d5e6f1a2b3c4',
+        category_id: '66666666-6666-6666-6666-666666666666',
+        name: "Yoga Mat",
+        description: "Eco-friendly non-slip mat",
+        stock: 65,
+        price: 29.95,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Beauty (77777777-7777-7777-7777-777777777777)
+      {
+        product_id: '2b3c4d5e-6f1a-42b3-c4d5-e6f1a2b3c4d5',
+        category_id: '77777777-7777-7777-7777-777777777777',
+        name: "Moisturizing Cream",
+        description: "24-hour hydration face cream",
+        stock: 110,
+        price: 18.50,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Furniture (88888888-8888-8888-8888-888888888888)
+      {
+        product_id: '3c4d5e6f-1a2b-43c4-d5e6-f1a2b3c4d5e6',
+        category_id: '88888888-8888-8888-8888-888888888888',
+        name: "Office Chair",
+        description: "Ergonomic mesh back chair",
+        stock: 30,
+        price: 149.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Grocery (99999999-9999-9999-9999-999999999999)
+      {
+        product_id: '4d5e6f1a-2b3c-44d5-e6f1-a2b3c4d5e6f1',
+        category_id: '99999999-9999-9999-9999-999999999999',
+        name: "Organic Coffee",
+        description: "Dark roast whole beans",
+        stock: 200,
+        price: 12.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Stationery (aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa)
+      {
+        product_id: '5e6f1a2b-3c4d-45e6-f1a2-b3c4d5e6f1a2',
+        category_id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        name: "Ballpoint Pens",
+        description: "12-pack assorted colors",
+        stock: 300,
+        price: 8.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Jewelry (bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb)
+      {
+        product_id: '6f1a2b3c-4d5e-46f1-a2b3-c4d5e6f1a2b3',
+        category_id: 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
+        name: "Silver Necklace",
+        description: "925 sterling silver chain",
+        stock: 40,
+        price: 59.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Automotive (cccccccc-cccc-cccc-cccc-cccccccccccc)
+      {
+        product_id: '7a1b2c3d-4e5f-47a1-b2c3-d4e5f7a1b2c3',
+        category_id: 'cccccccc-cccc-cccc-cccc-cccccccccccc',
+        name: "Car Phone Mount",
+        description: "Dashboard smartphone holder",
+        stock: 85,
+        price: 15.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Health (dddddddd-dddd-dddd-dddd-dddddddddddd)
+      {
+        product_id: '8b2c3d4e-5f6a-48b2-c3d4-e5f6a8b2c3d4',
+        category_id: 'dddddddd-dddd-dddd-dddd-dddddddddddd',
+        name: "Digital Thermometer",
+        description: "Fast reading oral thermometer",
+        stock: 60,
+        price: 9.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Pet Supplies (eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee)
+      {
+        product_id: '9c3d4e5f-6a1b-49c3-d4e5-f6a1b9c3d4f5',
+        category_id: 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee',
+        name: "Dog Leash",
+        description: "6ft durable nylon leash",
+        stock: 95,
+        price: 12.49,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Baby (ffffffff-ffff-ffff-ffff-ffffffffffff)
+      {
+        product_id: '0d4e5f6a-1b2c-40d4-e5f6-a1b2c0d4e5f7',
+        category_id: 'ffffffff-ffff-ffff-ffff-ffffffffffff',
+        name: "Baby Bottle Set",
+        description: "BPA-free 4-pack bottles",
+        stock: 55,
+        price: 16.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Tools (01234567-89ab-cdef-0123-456789abcdef)
+      {
+        product_id: '1e5f6a1b-2c3d-41e5-f6a1-b2c3d1e5f6c1',
+        category_id: '01234567-89ab-cdef-0123-456789abcdef',
+        name: "Cordless Drill",
+        description: "20V lithium-ion drill/driver",
+        stock: 35,
+        price: 79.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Outdoor (12345678-90ab-cdef-1234-567890abcdef)
+      {
+        product_id: '2f6a1b2c-3d4e-42f6-a1b2-c3d4f2f6a1b2',
+        category_id: '12345678-90ab-cdef-1234-567890abcdef',
+        name: "Camping Tent",
+        description: "4-person waterproof tent",
+        stock: 25,
+        price: 129.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Art (23456789-01ab-cdef-2345-678901abcdef)
+      {
+        product_id: 'b6d2178c-ec10-4892-9ec6-a0094c5b95e9',
+        category_id: '23456789-01ab-cdef-2345-678901abcdef',
+        name: "Acrylic Paint Set",
+        description: "24-color premium paints",
+        stock: 70,
+        price: 22.50,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Music (34567890-12ab-cdef-3456-789012abcdef)
+      {
+        product_id: '4b2c3d4e-5f6a-44b2-c3d4-e5f6a4b2c3d3',
+        category_id: '34567890-12ab-cdef-3456-789012abcdef',
+        name: "Acoustic Guitar",
+        description: "Beginner full-size guitar",
+        stock: 20,
+        price: 149.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Movies (45678901-23ab-cdef-4567-890123abcdef)
+      {
+        product_id: '5c3d4e5f-6a1b-45c3-d4e5-f6a1b5c3f4e5',
+        category_id: '45678901-23ab-cdef-4567-890123abcdef',
+        name: "Movie Collection Box Set",
+        description: "10 classic films Blu-ray",
+        stock: 40,
+        price: 49.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Gaming (56789012-34ab-cdef-5678-901234abcdef)
+      {
+        product_id: '6d4e5f6a-1b2c-46d4-e5f6-a1b2c6d3e5f6',
+        category_id: '56789012-34ab-cdef-5678-901234abcdef',
+        name: "Wireless Gaming Controller",
+        description: "Ergonomic design for PC/console",
+        stock: 65,
+        price: 44.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Computers (67890123-45ab-cdef-6789-012345abcdef)
+      {
+        product_id: '7e5f6a1b-2c3d-47e5-f6a1-b2c3d7e5f6a1',
+        category_id: '67890123-45ab-cdef-6789-012345abcdef',
+        name: "External SSD",
+        description: "1TB portable solid state drive",
+        stock: 50,
+        price: 109.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Phones (78901234-56ab-cdef-7890-123456abcdef)
+      {
+        product_id: '8f6a1b2c-3d4e-48f6-a1b2-c3d4e8f6a1b2',
+        category_id: '78901234-56ab-cdef-7890-123456abcdef',
+        name: "Phone Case",
+        description: "Shockproof protective case",
+        stock: 180,
+        price: 14.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Photography (89012345-67ab-cdef-8901-234567abcdef)
+      {
+        product_id: '9a1b2c3d-4e5f-49a1-b2c3-d4e5f9a1b2c3',
+        category_id: '89012345-67ab-cdef-8901-234567abcdef',
+        name: "Camera Tripod",
+        description: "Lightweight aluminum tripod",
+        stock: 45,
+        price: 39.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Luggage (90123456-78ab-cdef-9012-345678abcdef)
+      {
+        product_id: '0b2c3d4e-5f6a-40b2-c3d4-e5f6a0b2c3d4',
+        category_id: '90123456-78ab-cdef-9012-345678abcdef',
+        name: "Carry-On Suitcase",
+        description: "Hardshell spinner luggage",
+        stock: 35,
+        price: 89.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Fitness (a1b2c3d4-e5f6-a1b2-c3d4-e5f6a1b2c3d4)
+      {
+        product_id: '1c3d4e5f-6a1b-41c3-d4e5-f6a1b1c3d4e5',
+        category_id: 'a1b2c3d4-e5f6-a1b2-c3d4-e5f6a1b2c3d4',
+        name: "Resistance Bands Set",
+        description: "5 varying resistance levels",
+        stock: 90,
+        price: 19.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Industrial (b2c3d4e5-f6a1-b2c3-d4e5-f6a1b2c3d4e5)
+      {
+        product_id: '2d4e5f6a-1b2c-42d4-e5f6-a1b2c2d4e5f6',
+        category_id: 'b2c3d4e5-f6a1-b2c3-d4e5-f6a1b2c3d4e5',
+        name: "Safety Glasses",
+        description: "Anti-fog protective eyewear",
+        stock: 150,
+        price: 8.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Collectibles (c3d4e5f6-a1b2-c3d4-e5f6-a1b2c3d4e5f6)
+      {
+        product_id: '3e5f6a1b-2c3d-43e5-f6a1-b2c3d3e5f6a1',
+        category_id: 'c3d4e5f6-a1b2-c3d4-e5f6-a1b2c3d4e5f6',
+        name: "Limited Edition Figurine",
+        description: "Collector's item in original box",
+        stock: 15,
+        price: 79.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Software (d4e5f6a1-b2c3-d4e5-f6a1-b2c3d4e5f6a1)
+      {
+        product_id: '4f6a1b2c-3d4e-44f6-a1b2-c3d4e4f6a1b2',
+        category_id: 'd4e5f6a1-b2c3-d4e5-f6a1-b2c3d4e5f6a1',
+        name: "Antivirus Software",
+        description: "1-year subscription 3 devices",
+        stock: 200,
+        price: 39.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Party Supplies (e5f6a1b2-c3d4-e5f6-a1b2-c3d4e5f6a1b2)
+      {
+        product_id: '5a1b2c3d-4e5f-45a1-b2c3-d4e5f5a1b2c3',
+        category_id: 'e5f6a1b2-c3d4-e5f6-a1b2-c3d4e5f6a1b2',
+        name: "Balloon Arch Kit",
+        description: "Everything for party decorations",
+        stock: 60,
+        price: 24.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Office Electronics (f6a1b2c3-d4e5-f6a1-b2c3-d4e5f6a1b2c3)
+      {
+        product_id: '6b2c3d4e-5f6a-46b2-c3d4-e5f6a6b2c3d4',
+        category_id: 'f6a1b2c3-d4e5-f6a1-b2c3-d4e5f6a1b2c3',
+        name: "Document Scanner",
+        description: "High-speed duplex scanning",
+        stock: 30,
+        price: 199.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Additional products for popular categories
+      // Electronics
+      {
+        product_id: '7c3d4e5f-6a1b-47c3-d4e5-f6a1b7c3d4e5',
+        category_id: '11111111-1111-1111-1111-111111111111',
+        name: "Bluetooth Speaker",
+        description: "Portable waterproof speaker",
+        stock: 85,
+        price: 49.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        product_id: '8d4e5f6a-1b2c-48d4-e5f6-a1b2c8d4e5f6',
+        category_id: '11111111-1111-1111-1111-111111111111',
+        name: "Tablet",
+        description: "10-inch Android tablet",
+        stock: 40,
+        price: 179.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Clothing
+      {
+        product_id: '9e5f6a1b-2c3d-49e5-f6a1-b2c3d9e5f6a1',
+        category_id: '33333333-3333-3333-3333-333333333333',
+        name: "Men's Dress Shirt",
+        description: "Slim fit cotton shirt",
+        stock: 120,
+        price: 34.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        product_id: '0f6a1b2c-3d4e-40f6-a1b2-c3d4e0f6a1b2',
+        category_id: '33333333-3333-3333-3333-333333333333',
+        name: "Women's Yoga Pants",
+        description: "High-waisted leggings",
+        stock: 95,
+        price: 27.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Books
+      {
+        product_id: '1a1b2c3d-4e5f-41a1-b2c3-d4e5f1a1b2c3',
+        category_id: '22222222-2222-2222-2222-222222222222',
+        name: "Cookbook",
+        description: "Healthy recipes collection",
+        stock: 75,
+        price: 18.95,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        product_id: '2b2c3d4e-5f6a-42b2-c3d4-e5f6a2b2c3d4',
+        category_id: '22222222-2222-2222-2222-222222222222',
+        name: "Children's Book",
+        description: "Illustrated storybook",
+        stock: 110,
+        price: 9.99,
+        image_url: "product.jpeg",
         createdAt: new Date(),
         updatedAt: new Date()
       },
 
       // Home Appliances
       {
-        product_id: '9e606198-9e51-4265-a2b6-7d73a203e838',
+        product_id: '3c3d4e5f-6a1b-43c3-d4e5-f6a1b3c3d4e5',
         category_id: '44444444-4444-4444-4444-444444444444',
-        name: 'Microwave Oven',
-        description: '1000W microwave oven',
-        stock: 30,
-        price: 99.99,
-        image_url: 'product.jpeg',
+        name: "Blender",
+        description: "High-powered kitchen blender",
+        stock: 55,
+        price: 59.99,
+        image_url: "product.jpeg",
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        product_id: 'ed981ab2-6674-4e15-b769-092414fd62a6',
+        product_id: '4d4e5f6a-1b2c-44d4-e5f6-a1b2c4d4e5f6',
         category_id: '44444444-4444-4444-4444-444444444444',
-        name: 'Air Conditioner',
-        description: 'Split AC 1.5 Ton',
-        stock: 20,
-        price: 499.99,
-        image_url: 'product.jpeg',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        product_id: '12df0d0e-1196-4564-bfc8-05edd298d9c1',
-        category_id: '44444444-4444-4444-4444-444444444444',
-        name: 'Vacuum Cleaner',
-        description: 'Portable vacuum cleaner',
-        stock: 40,
-        price: 89.99,
-        image_url: 'product.jpeg',
+        name: "Robot Vacuum",
+        description: "Smart mapping vacuum cleaner",
+        stock: 25,
+        price: 249.99,
+        image_url: "product.jpeg",
         createdAt: new Date(),
         updatedAt: new Date()
       },
 
       // Toys
       {
-        product_id: '3155f10a-657a-4ce1-adca-ad750341467d',
+        product_id: '5e5f6a1b-2c3d-45e5-f6a1-b2c3d5e5f6a1',
         category_id: '55555555-5555-5555-5555-555555555555',
-        name: 'Lego Set',
-        description: 'Creative Lego building blocks',
-        stock: 100,
-        price: 59.99,
-        image_url: 'product.jpeg',
+        name: "Remote Control Car",
+        description: "2.4GHz RC stunt car",
+        stock: 65,
+        price: 34.99,
+        image_url: "product.jpeg",
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        product_id: '68aac87c-60d2-4dce-86b3-67b7386a9c00',
+        product_id: '6f6a1b2c-3d4e-46f6-a1b2-c3d4e6f6a1b2',
         category_id: '55555555-5555-5555-5555-555555555555',
-        name: 'Remote Car',
-        description: 'Rechargeable remote-controlled car',
-        stock: 70,
-        price: 39.99,
-        image_url: 'product.jpeg',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        product_id: 'faf5af8d-a71b-4f97-8926-6fb7048e0475',
-        category_id: '55555555-5555-5555-5555-555555555555',
-        name: 'Stuffed Bear',
-        description: 'Soft teddy bear toy',
-        stock: 120,
-        price: 24.99,
-        image_url: 'product.jpeg',
+        name: "Board Game",
+        description: "Family strategy game",
+        stock: 80,
+        price: 29.99,
+        image_url: "product.jpeg",
         createdAt: new Date(),
         updatedAt: new Date()
       },
 
       // Sports
       {
-        product_id: '2cf3cf7e-8361-4481-8f39-16dcdb0bd89f',
+        product_id: '7a1b2c3d-4e5f-47a1-b2c3-d4e5f7a1b2c4',
         category_id: '66666666-6666-6666-6666-666666666666',
-        name: 'Football',
-        description: 'Professional size 5 football',
-        stock: 60,
-        price: 19.99,
-        image_url: 'product.jpeg',
+        name: "Running Shoes",
+        description: "Lightweight cushioned shoes",
+        stock: 70,
+        price: 79.99,
+        image_url: "product.jpeg",
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        product_id: 'ccb6b7a8-5457-4428-b1ba-080d9f8d5af4',
+        product_id: '8b2c3d4e-5f6a-48b2-c3d4-e5f6a8b2c3d3',
         category_id: '66666666-6666-6666-6666-666666666666',
-        name: 'Cricket Bat',
-        description: 'Wooden cricket bat',
-        stock: 40,
-        price: 34.99,
-        image_url: 'product.jpeg',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        product_id: '24a430bf-563a-49bd-a8da-b68e53bb00e3',
-        category_id: '66666666-6666-6666-6666-666666666666',
-        name: 'Tennis Racket',
-        description: 'Lightweight racket for beginners',
-        stock: 35,
-        price: 59.99,
-        image_url: 'product.jpeg',
+        name: "Basketball",
+        description: "Official size and weight",
+        stock: 90,
+        price: 24.99,
+        image_url: "product.jpeg",
         createdAt: new Date(),
         updatedAt: new Date()
       },
 
       // Beauty
       {
-        product_id: 'aa0d11a3-9c69-4464-a504-fe030541e2a7',
+        product_id: '9c3d4e5f-6a1b-49c3-d4e5-f6a1b9c3d4e5',
         category_id: '77777777-7777-7777-7777-777777777777',
-        name: 'Face Wash',
-        description: 'Gentle foaming face wash',
-        stock: 200,
-        price: 6.99,
-        image_url: 'product.jpeg',
+        name: "Makeup Palette",
+        description: "12-shade eyeshadow palette",
+        stock: 60,
+        price: 22.50,
+        image_url: "product.jpeg",
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        product_id: 'e60864c3-b999-409f-9d31-16829d4dd747',
+        product_id: '0d4e5f6a-1b2c-40d4-e5f6-a1b2c0d4e5f6',
         category_id: '77777777-7777-7777-7777-777777777777',
-        name: 'Hair Oil',
-        description: 'Natural nourishing hair oil',
-        stock: 100,
-        price: 8.99,
-        image_url: 'product.jpeg',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        product_id: '40c73547-3b1c-4e52-aef4-90dac08b952c',
-        category_id: '77777777-7777-7777-7777-777777777777',
-        name: 'Lipstick Set',
-        description: 'Pack of 6 matte lipsticks',
-        stock: 90,
-        price: 14.99,
-        image_url: 'product.jpeg',
+        name: "Hair Dryer",
+        description: "Professional ionic dryer",
+        stock: 45,
+        price: 59.99,
+        image_url: "product.jpeg",
         createdAt: new Date(),
         updatedAt: new Date()
       },
 
       // Furniture
       {
-        product_id: 'a1ca98ff-210f-4f6d-a510-e27febcb93fc',
+        product_id: '1e5f6a1b-2c3d-41e5-f6a1-b2c3d1e5f6a1',
         category_id: '88888888-8888-8888-8888-888888888888',
-        name: 'Office Chair',
-        description: 'Ergonomic adjustable chair',
+        name: "Bookshelf",
+        description: "5-tier wooden shelf",
         stock: 25,
-        price: 149.99,
-        image_url: 'product.jpeg',
+        price: 89.99,
+        image_url: "product.jpeg",
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        product_id: '4b188542-2285-4505-b091-a92a525e7c23',
+        product_id: '2f6a1b2c-3d4e-42f6-a1b2-c3d4e2f6a1b2',
         category_id: '88888888-8888-8888-8888-888888888888',
-        name: 'Wooden Table',
-        description: 'Sturdy wooden dining table',
-        stock: 10,
-        price: 299.99,
-        image_url: 'product.jpeg',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        product_id: 'e22a9932-0724-405e-91e4-8a9d29f80b8d',
-        category_id: '88888888-8888-8888-8888-888888888888',
-        name: 'Sofa Set',
-        description: '3-seater with cushions',
-        stock: 8,
-        price: 499.99,
-        image_url: 'product.jpeg',
+        name: "Coffee Table",
+        description: "Modern glass top table",
+        stock: 15,
+        price: 129.99,
+        image_url: "product.jpeg",
         createdAt: new Date(),
         updatedAt: new Date()
       },
 
       // Grocery
       {
-        product_id: '8119eb8d-c1b5-4c23-a559-a7b31e790a45',
+        product_id: '3a1b2c3d-4e5f-43a1-b2c3-d4e5f3a1b2c3',
         category_id: '99999999-9999-9999-9999-999999999999',
-        name: 'Organic Rice',
-        description: '1kg long grain organic rice',
-        stock: 100,
-        price: 4.99,
-        image_url: 'product.jpeg',
+        name: "Organic Tea",
+        description: "Assorted herbal tea bags",
+        stock: 150,
+        price: 6.99,
+        image_url: "product.jpeg",
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        product_id: '1d621242-4dbf-499c-9b79-d8e759320ff0',
+        product_id: '4b2c3d4e-5f6a-44b2-c3d4-e5f6a4b2c3d4',
         category_id: '99999999-9999-9999-9999-999999999999',
-        name: 'Cooking Oil',
-        description: 'Sunflower oil 1L',
-        stock: 60,
+        name: "Granola Bars",
+        description: "12-pack assorted flavors",
+        stock: 200,
+        price: 8.49,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
+      // Stationery
+      {
+        product_id: '5c3d4e5f-6a1b-45c3-d4e5-f6a1b5c3d4e5',
+        category_id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        name: "Notebook Set",
+        description: "3-pack lined notebooks",
+        stock: 120,
+        price: 12.99,
+        image_url: "product.jpeg",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        product_id: '6d4e5f6a-1b2c-46d4-e5f6-a1b2c6d4e5f6',
+        category_id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        name: "Sticky Notes",
+        description: "6-color pack 100 sheets each",
+        stock: 180,
         price: 5.99,
-        image_url: 'product.jpeg',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        product_id: 'a70df46d-a608-475c-9351-1c953310e3ea',
-        category_id: '99999999-9999-9999-9999-999999999999',
-        name: 'Flour Pack',
-        description: '5kg whole wheat flour',
-        stock: 50,
-        price: 6.49,
-        image_url: 'product.jpeg',
+        image_url: "product.jpeg",
         createdAt: new Date(),
         updatedAt: new Date()
       }
