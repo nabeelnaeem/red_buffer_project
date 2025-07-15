@@ -8,16 +8,31 @@ export const getAllProducts = async ({ name, sortBy = 'name', sortOrder = 'asc',
     const sortDirection = sortOrder.toLowerCase() === 'desc' ? 'DESC' : 'ASC';
     const offset = (page - 1) * limit;
 
-    let baseQuery = `FROM ${TABLE_NAME}`;
     const replacements = { limit, offset };
-
+    let baseQuery = `
+        FROM products p
+        JOIN categories c ON p.category_id = c.category_id
+        LEFT JOIN reviews r ON p.product_id = r.product_id
+        `;
     if (name) {
-        baseQuery += ` WHERE LOWER(name) LIKE :name`;
+        baseQuery += ` WHERE LOWER(p.name) LIKE :name`;
         replacements.name = `%${name.toLowerCase()}%`;
     }
 
-    const query = `SELECT * ${baseQuery} ORDER BY "${sortField}" ${sortDirection} LIMIT :limit OFFSET :offset`;
-    const countQuery = `SELECT COUNT(*) as total ${baseQuery}`;
+    const query = `
+                    SELECT 
+                    p.*, 
+                    c.name AS category,
+                    ROUND(AVG(r.rating), 1) AS rating
+                    ${baseQuery}
+                    GROUP BY p.product_id, c.name
+                    ORDER BY "${sortField}" ${sortDirection}
+                    LIMIT :limit OFFSET :offset
+                `;
+
+    const countQuery = `SELECT COUNT(DISTINCT p.product_id) AS total
+    ${baseQuery}
+    `;
 
     const [[{ total }]] = await sequelize.query(countQuery, { replacements });
     const [products] = await sequelize.query(query, { replacements });
