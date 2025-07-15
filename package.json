@@ -4,6 +4,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "setup": "node config/setup.js",
+    "migrate": "npm run setup && sequelize db:migrate",
+    "migrate:undo": "npm run setup && sequelize db:migrate:undo",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
