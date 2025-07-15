@@ -3,105 +3,105 @@ export default {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('categories', [
       {
-        category_id: '11111111-1111-1111-1111-111111111111',
+        category_id: 'a1bbfbb1-56a2-4432-b54b-7c0980cbfc18',
         name: 'Electronics',
         description: 'Electronic gadgets and devices',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        category_id: '22222222-2222-2222-2222-222222222222',
+        category_id: '3cd3f4bc-8e5b-4d16-a7df-5a8343d82e77',
         name: 'Books',
         description: 'All kinds of books and novels',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        category_id: '33333333-3333-3333-3333-333333333333',
+        category_id: 'ec4c20a8-b246-4346-b0da-c7331c1e22d1',
         name: 'Clothing',
         description: 'Men and Women clothing',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        category_id: '44444444-4444-4444-4444-444444444444',
+        category_id: 'c26ea8fe-7da9-49c4-904a-9689ac282033',
         name: 'Home Appliances',
         description: 'Appliances for home use',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        category_id: '55555555-5555-5555-5555-555555555555',
+        category_id: '908fd655-7b28-418a-9fd8-9d38679f834a',
         name: 'Toys',
         description: 'Toys for kids of all ages',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        category_id: '66666666-6666-6666-6666-666666666666',
+        category_id: 'bad6c269-c1fb-4416-9796-ca3361fc9272',
         name: 'Sports',
         description: 'Sports equipment and accessories',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        category_id: '77777777-7777-7777-7777-777777777777',
+        category_id: '49a564dd-673b-4746-8bfe-cb655b3b5ccf',
         name: 'Beauty',
         description: 'Beauty and personal care products',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        category_id: '88888888-8888-8888-8888-888888888888',
+        category_id: 'b25fe671-3437-4d6b-a29d-f95d5e329659',
         name: 'Furniture',
         description: 'Home and office furniture',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        category_id: '99999999-9999-9999-9999-999999999999',
+        category_id: '27c5cefb-33eb-4a52-9242-b554010df167',
         name: 'Grocery',
         description: 'Everyday grocery items',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        category_id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        category_id: '84180371-7e3d-4145-afd5-278c74d93519',
         name: 'Stationery',
         description: 'Office and school supplies',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        category_id: 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
+        category_id: 'f2f8fa04-ab77-4b70-b1db-de18066ae4a7',
         name: 'Jewelry',
         description: 'Fine jewelry and watches',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        category_id: 'cccccccc-cccc-cccc-cccc-cccccccccccc',
+        category_id: '1f67c8b4-4d05-49d5-a6ac-11e9da678cf0',
         name: 'Automotive',
         description: 'Car parts and accessories',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        category_id: 'dddddddd-dddd-dddd-dddd-dddddddddddd',
+        category_id: 'be019812-3535-433f-a587-bcaa6ebfe5fd',
         name: 'Health',
         description: 'Health and wellness products',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        category_id: 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee',
+        category_id: 'e752697d-b91e-45d4-b873-c6d7b8738d8c',
         name: 'Pet Supplies',
         description: 'Products for pets and animals',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        category_id: 'ffffffff-ffff-ffff-ffff-ffffffffffff',
+        category_id: 'd8fdc4d3-af0b-4fe9-8f98-3dc730b9be22',
         name: 'Baby',
         description: 'Baby care and essentials',
         createdAt: new Date(),
