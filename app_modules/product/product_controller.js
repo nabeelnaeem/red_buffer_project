@@ -14,7 +14,7 @@ const IMAGE_URL_REQUIRED_MESSAGE = 'Image URL is required';
 export const createProduct = async (req, res) => {
 
     try {
-        let { category_id, name, description, stock, price, image_url } = req.body;
+        const { category_id, name, description, stock, price, image_url } = req.body;
 
         if (!category_id) res.status(400).json({ message: CATEGORY_REQUIRED_MESSAGE }); //will assign a default category here later
         if (!name) res.status(400).json({ message: NAME_REQUIRED_MESSAGE });
@@ -22,10 +22,10 @@ export const createProduct = async (req, res) => {
 
         await productService.createProduct(category_id, name, description, stock, price, image_url)
             .then((product) => {
-                res.status(201).json({ message: PRODUCT_CREATED_MESSAGE, product });
+                return res.status(201).json({ message: PRODUCT_CREATED_MESSAGE, product });
             })
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
 };
 
@@ -39,9 +39,9 @@ export const getAllProducts = async (req, res) => {
 
         const products = await productService.getAllProducts({ name, sortBy, sortOrder, page, limit });
         if (products)
-            res.json(products);
+            return res.json(products);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
 };
 
@@ -52,9 +52,9 @@ export const getProductById = async (req, res) => {
         if (!isProductExisting) return res.status(404).json({ error: PRODUCT_NOT_FOUND_MESSAGE });
 
         const product = await productService.getProductById(id);
-        res.json(product);
+        return res.json(product);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
 };
 
@@ -71,9 +71,9 @@ export const updateProduct = async (req, res) => {
         if (!updatedProduct) {
             return res.status(404).json({ message: PRODUCT_NOT_UPDATED_MESSAGE });
         }
-        res.json(PRODUCT_UPDATED_MESSAGE, updatedProduct);
+        return res.json(PRODUCT_UPDATED_MESSAGE, updatedProduct);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
 };
 
@@ -85,12 +85,12 @@ export const deleteProduct = async (req, res) => {
 
         await productService.deleteProduct(id)
             .then((deletedProduct) => {
-                res.json({ message: PRODUCT_DELETED_MESSAGE });
+                return res.json({ message: PRODUCT_DELETED_MESSAGE });
             })
             .catch(err => {
-                res.status(400).json({ error: err.message });
+                return res.status(400).json({ error: err.message });
             })
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
 };

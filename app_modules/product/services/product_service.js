@@ -103,10 +103,10 @@ export const createProduct = async (category_id, name, description, stock, price
     const replacements = {
         category_id: category_id,
         name: name,
-        description: description || null,
+        description: description || '',
         stock: stock || 0,
         price: price || 0,
-        image_url: image_url || null
+        image_url: image_url || ''
     };
 
     const [result] = await sequelize.query(query, { replacements });
