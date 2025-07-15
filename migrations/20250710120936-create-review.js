@@ -23,6 +23,7 @@ export default {
       rating: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        defaultValue: 0
       },
       comment: {
         type: Sequelize.TEXT,
