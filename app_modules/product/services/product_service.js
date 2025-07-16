@@ -96,7 +96,7 @@ export const getProductById = async (product_id) => {
     });
 
     return {
-        product,
+        ...product,
         reviews,
     };
 };
