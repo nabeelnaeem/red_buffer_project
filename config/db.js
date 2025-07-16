@@ -1,18 +1,20 @@
 import { Sequelize } from "sequelize";
 import pkg from 'pg';
+import dotenv from 'dotenv';
 const { Client } = pkg;
 
-const dbName = 'ecomerce_db';
-const dbUser = 'admin';
-const dbPass = 'admin';
-const dbHost = 'localhost';
+dotenv.config();
+const dbName = process.env.DB_NAME;
+const dbUser = process.env.DB_USER;
+const dbPass = process.env.DB_PASSWORD;
+const dbHost = process.env.DB_HOST;
 
 export const createDB = async () => {
     const client = new Client({
         user: dbUser,
         password: dbPass,
         host: dbHost,
-        database: 'postgres'
+        database: process.env.DB_MAIN
     });
 
     await client.connect();
@@ -38,7 +40,7 @@ export const createDB = async () => {
 
 export const sequelize = new Sequelize(dbName, dbUser, dbPass, {
     host: dbHost,
-    dialect: 'postgres',
+    dialect: process.env.DB_DIALECT,
     logging: false,
 });
 

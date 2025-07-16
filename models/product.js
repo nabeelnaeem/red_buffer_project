@@ -35,6 +35,11 @@ export default (sequelize) => {
       type: DataTypes.DOUBLE,
       allowNull: false,
       defaultValue: 0,
+    },
+    image_url: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      defaultValue: 'http://product.jpeg',
     }
   }, {
     sequelize,
