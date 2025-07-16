@@ -19,6 +19,7 @@ export const getAllProducts = async ({
     FROM ${TABLE_NAME} p
     JOIN categories c ON p.category_id = c.category_id
     LEFT JOIN reviews r ON p.product_id = r.product_id
+    WHERE p."deletedAt" IS NULL
   `;
 
     if (name) {
@@ -66,7 +67,7 @@ export const getProductById = async (product_id) => {
         FROM ${TABLE_NAME} p
         JOIN categories c ON p.category_id = c.category_id
         LEFT JOIN reviews r ON p.product_id = r.product_id
-        WHERE p.product_id = :product_id
+        WHERE p.product_id = :product_id AND p."deletedAt" IS NULL
         GROUP BY p.product_id, c.name
     `;
 
@@ -152,7 +153,7 @@ export const createProduct = async (category_id, name, description, stock, price
 };
 
 export const deleteProduct = async (product_id) => {
-    const query = `DELETE FROM ${TABLE_NAME} 
+    const query = `UPDATE ${TABLE_NAME} SET "deletedAt" = NOW()
                     WHERE product_id = :product_id
     `;
     const replacements = {
@@ -163,7 +164,7 @@ export const deleteProduct = async (product_id) => {
 }
 
 export const ifExistingProduct = async (product_id) => {
-    const query = `SELECT * FROM ${TABLE_NAME} WHERE product_id = :product_id`;
+    const query = `SELECT * FROM ${TABLE_NAME} WHERE product_id = :product_id AND "deletedAt" IS NULL`;
     const [result] = await sequelize.query(query, {
         replacements: { product_id }
     });
