@@ -85,7 +85,7 @@ export const getProductById = async (product_id) => {
             r.comment,
             r."createdAt",
             r."updatedAt",
-            u.username
+            u.full_name
         FROM reviews r
         JOIN users u ON r.user_id = u.user_id
         WHERE r.product_id = :product_id
