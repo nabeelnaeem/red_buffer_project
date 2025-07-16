@@ -8,19 +8,19 @@ const STATUS_ALREADY_REVOKED_MESSAGE = 'User status is already revoked';
 
 export const createUser = async (username, password, email) => {
     const query = `
-    INSERT INTO "users" (user_id, username, password, email, address, phone, is_revoked, "createdAt", "updatedAt")
-    VALUES ( gen_random_uuid(), :username, :password, :email, :address, :phone, :is_revoked, NOW(), NOW())
+    INSERT INTO "users" (user_id, username, password, email, full_name, address, phone, is_revoked, "createdAt", "updatedAt")
+    VALUES ( gen_random_uuid(), :username, :password, :email, :full_name, :address, :phone, :is_revoked, NOW(), NOW())
   `;
 
     const [result] = await sequelize.query(query, {
-        replacements: { username, password, email, address: null, phone: null, is_revoked: false }
+        replacements: { username, password, email, full_name: null, address: null, phone: null, is_revoked: false }
     });
 
     return result[0];
 };
 
 export const findUserByUsername = async (username) => {
-    const query = `SELECT * FROM "users" WHERE username = :username`;
+    const query = `SELECT * FROM "users" WHERE username = :username AND "deletedAt" IS NULL`;
     const [result] = await sequelize.query(query, {
         replacements: { username },
     });
@@ -28,7 +28,7 @@ export const findUserByUsername = async (username) => {
 };
 
 export const findUserByEmail = async (email) => {
-    const query = `SELECT * FROM "users" WHERE email = :email`;
+    const query = `SELECT * FROM "users" WHERE email = :email AND "deletedAt" IS NULL`;
     const [result] = await sequelize.query(query, {
         replacements: { email },
     });
