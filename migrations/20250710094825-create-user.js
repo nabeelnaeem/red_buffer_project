@@ -22,6 +22,10 @@ export default {
         allowNull: false,
         unique: true
       },
+      full_name: {
+        type: Sequelize.TEXT,
+        allowNull: true
+      },
       address: {
         type: Sequelize.TEXT,
         allowNull: true

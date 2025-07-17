@@ -29,6 +29,10 @@ export default (sequelize) => {
       allowNull: false,
       unique: true
     },
+    full_name: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
     address: {
       type: DataTypes.TEXT,
       allowNull: true
