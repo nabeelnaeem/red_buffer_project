@@ -51,9 +51,16 @@ export const login = async (req, res) => {
             return res.status(401).json({ error: INVALID_CREDENTIALS_MESSAGE });
 
         const token = jwt.sign({ username: user.username }, 'abcd', { expiresIn: '15m' });
-        res.json({ message: SUCCESSFUL_LOGIN_MESSAGE, token });
+        return res.json({
+            message: SUCCESSFUL_LOGIN_MESSAGE,
+            token,
+            user: {
+                username: user.username,
+                email: user.email,
+            }
+        });
     } catch (error) {
-        res.status(500).json({ error: LOGIN_FAILED_MESSAGE + error });
+        return res.status(500).json({ error: LOGIN_FAILED_MESSAGE + error });
     }
 }
 
@@ -79,9 +86,12 @@ export const profile = async (req, res) => {
     const username = getUserNameFromToken(req);
     const revokedUser = await isUserAccessRevoked(username);
     if (revokedUser) {
-        res.json({ message: `${username}, ${USER_STATUS_REVOKED_MESSAGE}` });
+        return res.json({ message: `${username}, ${USER_STATUS_REVOKED_MESSAGE}` });
     }
     else {
-        res.json({ message: `Welcome ${username}, this is your profile.` });
+        return res.json({
+            message: `Welcome ${username}, this is your profile.`,
+            user: { username }  // ✅ Send user object
+        });
     }
 }
