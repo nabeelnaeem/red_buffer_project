@@ -23,7 +23,7 @@ export const getAllProducts = async ({
   `;
 
     if (name) {
-        baseQuery += ` WHERE p.name ILIKE :name`;
+        baseQuery += ` AND p.name ILIKE :name`;
         replacements.name = `%${name.toLowerCase()}%`;
     }
     // ORDER BY ${sortField === 'rating' ? 'rating' : `"${sortField}"`} ${sortDirection}
