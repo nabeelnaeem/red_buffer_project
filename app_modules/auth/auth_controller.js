@@ -54,7 +54,7 @@ export const login = async (req, res) => {
         if (!match)
             return res.status(401).json({ error: INVALID_CREDENTIALS_MESSAGE });
 
-        const token = jwt.sign({ username: user.username }, 'abcd', { expiresIn: '15m' });
+        const token = jwt.sign({ username: user.username }, 'abcd', { expiresIn: '1hr' });
         return res.json({
             message: SUCCESSFUL_LOGIN_MESSAGE,
             token,

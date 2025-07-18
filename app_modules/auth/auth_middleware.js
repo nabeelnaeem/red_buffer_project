@@ -18,7 +18,7 @@ export const verifyToken = (req, res, next) => {
 
     jwt.verify(token, 'abcd', (err, decoded) => {
         if (err)
-            return res.status(403).json({ error: INVALID_TOKEN_MESSAGE });
+            return res.status(401).json({ error: INVALID_TOKEN_MESSAGE });
         req.user = decoded;
         next();
     });
