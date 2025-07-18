@@ -19,6 +19,25 @@ export const createUser = async (username, password, email) => {
     return result[0];
 };
 
+export const updateUserProfile = async (username, full_name, address, phone) => {
+    const query = `
+        UPDATE "users"
+        SET
+            full_name = COALESCE(:full_name, full_name),
+            address = COALESCE(:address, address),
+            phone = COALESCE(:phone, phone),
+            "updatedAt" = NOW()
+        WHERE username = :username AND "deletedAt" IS NULL
+        RETURNING user_id, username, email, full_name, address, phone, "createdAt", "updatedAt";
+    `;
+
+    const [result] = await sequelize.query(query, {
+        replacements: { username, full_name, address, phone }
+    });
+    return result[0];
+};
+
+
 export const findUserByUsername = async (username) => {
     const query = `SELECT * FROM "users" WHERE username = :username AND "deletedAt" IS NULL`;
     const [result] = await sequelize.query(query, {

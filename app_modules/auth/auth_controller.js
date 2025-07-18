@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createUser, findUserByUsername, isUserAccessRevoked, revokeAccess, getUserNameFromToken, isUserNameOrToken, findUserByEmail } from "./services/auth_service.js";
+import { createUser, findUserByUsername, isUserAccessRevoked, revokeAccess, getUserNameFromToken, isUserNameOrToken, findUserByEmail, updateUserProfile } from "./services/auth_service.js";
 
 const USERNAME_ALREADY_EXISTS_MESSAGE = 'User name already exists';
 const EMAIL_ALREADY_EXISTS_MESSAGE = 'Email already exists';
@@ -10,6 +10,10 @@ const USER_STATUS_REVOKED_MESSAGE = 'User status is revoked';
 const INVALID_CREDENTIALS_MESSAGE = 'Invalid Credentials';
 const SUCCESSFUL_LOGIN_MESSAGE = 'Login successful';
 const LOGIN_FAILED_MESSAGE = 'Login failed';
+const PROFILE_UPDATED_MESSAGE = 'Profile updated successfully';
+const PROFILE_UPDATE_FAILED_MESSAGE = 'Failed to update profile';
+const MISSING_FIELD_MESSAGE = 'At least one field (full_name, address, phone) must be provided';
+
 //Signup 
 export const signup = async (req, res) => {
     const { username, password, email } = req.body;
@@ -50,7 +54,7 @@ export const login = async (req, res) => {
         if (!match)
             return res.status(401).json({ error: INVALID_CREDENTIALS_MESSAGE });
 
-        const token = jwt.sign({ username: user.username }, 'abcd', { expiresIn: '15m' });
+        const token = jwt.sign({ username: user.username }, 'abcd', { expiresIn: '1hr' });
         return res.json({
             message: SUCCESSFUL_LOGIN_MESSAGE,
             token,
@@ -90,9 +94,37 @@ export const profile = async (req, res) => {
         return res.json({ message: `${username}, ${USER_STATUS_REVOKED_MESSAGE}` });
     }
     else {
-        return res.json({
-            message: `Welcome ${username}, this is your profile.`,
-            user: { username }  // ✅ Send user object
-        });
+        const user = await findUserByUsername(username);
+        if (!user) {
+            return res.json({ message: USER_NOT_FOUND_MESSAGE });
+        }
+        else {
+            const { password, ...safeUser } = user;
+            return res.json({
+                message: `Welcome ${username}, this is your profile.`,
+                user: safeUser  // user without password
+            });
+        }
     }
 }
+
+export const updateProfile = async (req, res) => {
+    try {
+        const username = getUserNameFromToken(req);
+        const { full_name, address, phone } = req.body;
+
+        if (!full_name && !address && !phone) {
+            return res.status(400).json({ error: MISSING_FIELD_MESSAGE });
+        }
+        const updatedUser = await updateUserProfile(username, full_name, address, phone);
+        if (!updatedUser) {
+            return res.status(404).json({ error: USER_NOT_FOUND_MESSAGE });
+        }
+        return res.status(200).json({
+            message: PROFILE_UPDATED_MESSAGE,
+            user: updatedUser
+        });
+    } catch (error) {
+        return res.status(500).json({ error: PROFILE_UPDATE_FAILED_MESSAGE });
+    }
+};
