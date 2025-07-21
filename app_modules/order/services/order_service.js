@@ -9,7 +9,7 @@ export const placeOrder = async (user_id, cart, shippingInfo, paymentInfo) => {
         //Order
         const order_id = uuidv4();
         const [orderResult] = await sequelize.query(
-            `INSERT INTO orders (order_id, user_id, date, status, amount, "createAt", "updatedAt")
+            `INSERT INTO orders (order_id, user_id, date, status, amount, "createdAt", "updatedAt")
                 VALUES (:order_id, :user_id, NOW(), 'pending', 0, NOW(), NOW())
                 RETURNING *;
             `, {
@@ -34,6 +34,7 @@ export const placeOrder = async (user_id, cart, shippingInfo, paymentInfo) => {
                 throw new Error(`Insufficient stock for ${name}`);
 
             const amount = price * item.quantity;
+            total += amount;
 
             await sequelize.query(`
                 INSERT INTO order_item (order_item_id, order_id, product_id, quantity, amount, "createdAt", "updatedAt")
@@ -69,6 +70,20 @@ export const placeOrder = async (user_id, cart, shippingInfo, paymentInfo) => {
                 method: shippingInfo.method,
                 tracking_id
             }, transaction: t
+        });
+
+        //Payment
+        await sequelize.query(`
+            INSERT INTO payments (payment_id, order_id, date, method, amount, status, "createdAt", "updatedAt")
+            VALUES (gen_random_uuid(), :order_id, NOW(), :method, :amount, :status, NOW(), NOW())
+            `, {
+            replacements: {
+                order_id,
+                method: paymentInfo.method,
+                amount: total,
+                status: paymentInfo.status || 'pending'
+            },
+            transaction: t
         });
 
         //Update order total

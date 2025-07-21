@@ -1,8 +1,9 @@
 import { placeOrder } from "./services/order_service.js"
-
+import { getUserIdFromToken } from '../auth/services/auth_service.js';
 export const createOrder = async (req, res) => {
     try {
         const { cart, shippingInfo, paymentInfo } = req.body;
+        const user_id = getUserIdFromToken(req);
 
         if (!user_id) {
             return res.status(401).json({ error: 'Unauthorize: user ID missing' });
