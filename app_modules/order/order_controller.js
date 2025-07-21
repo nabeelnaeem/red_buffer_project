@@ -1,4 +1,4 @@
-import { placeOrder } from "./services/order_service.js"
+import { placeOrder, getOrderDetails } from "./services/order_service.js"
 import { getUserIdFromToken } from '../auth/services/auth_service.js';
 export const createOrder = async (req, res) => {
     try {
@@ -26,5 +26,23 @@ export const createOrder = async (req, res) => {
         return res.status(201).json(result);
     } catch (err) {
         return res.status(500).json({ error: 'Failed to place order', detail: err.message });
+    }
+};
+
+
+export const getOrderById = async (req, res) => {
+    try {
+        const { order_id } = req.params;
+
+        if (!order_id) {
+            return res.status(400).json({ error: 'Order ID is required' });
+        }
+
+        const orderDetails = await getOrderDetails(order_id);
+        return res.status(200).json(orderDetails);
+
+    } catch (error) {
+        console.error('Error fetching order details:', error.message);
+        return res.status(500).json({ error: 'Failed to retrieve order details' });
     }
 };

@@ -148,3 +148,73 @@ export const placeOrder = async (user_id, cart, shippingInfo, paymentInfo) => {
         throw err;
     }
 };
+
+export const getOrderDetails = async (order_id) => {
+    try {
+        const [orderData] = await sequelize.query(`
+            SELECT o.order_id, o.date AS order_date, o.status AS order_status, o.amount AS total_amount,
+                    u.user_id, u.username, u.email, u.full_name, u.phone, u.address 
+            FROM orders o
+            JOIN users u ON o.user_id = u.user_id
+            WHERE o.order_id = :order_id
+        `, {
+            replacements: { order_id }
+        });
+
+        if (!orderData.length) {
+            throw new Error('Order not found');
+        }
+
+        const order = orderData[0];
+
+        // Fetch Order Items
+        const [items] = await sequelize.query(`
+            SELECT oi.product_id, p.name AS product_name, p.price, oi.quantity, oi.amount
+            FROM order_item oi
+            JOIN products p ON oi.product_id = p.product_id
+            WHERE oi.order_id = :order_id
+        `, {
+            replacements: { order_id }
+        });
+
+        // Fetch Shipping Info
+        const [shippingData] = await sequelize.query(`
+            SELECT address, method, tracking_id, status AS shipping_status, "createdAt" AS shipped_at
+            FROM shippings WHERE order_id = :order_id
+        `, {
+            replacements: { order_id }
+        });
+
+        // Fetch Payment Info
+        const [paymentData] = await sequelize.query(`
+            SELECT method, amount, status AS payment_status, date AS payment_date 
+            FROM payments
+            WHERE order_id = :order_id
+        `, {
+            replacements: { order_id }
+        });
+
+        return {
+            user: {
+                user_id: order.user_id,
+                username: order.username,
+                email: order.email,
+                full_name: order.full_name,
+                phone: order.phone,
+                address: order.address
+            },
+            order: {
+                order_id: order.order_id,
+                status: order.order_status,
+                date: order.order_date,
+                total_amount: order.total_amount
+            },
+            items,
+            shipping: shippingData[0] || {},
+            payment: paymentData[0] || {}
+        };
+    } catch (err) {
+        throw err;
+    }
+};
+
