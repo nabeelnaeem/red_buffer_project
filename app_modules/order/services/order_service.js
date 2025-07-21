@@ -217,4 +217,3 @@ export const getOrderDetails = async (order_id) => {
         throw err;
     }
 };
-
