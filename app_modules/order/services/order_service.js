@@ -112,11 +112,11 @@ export const placeOrder = async (user_id, cart, shippingInfo, paymentInfo) => {
         const user = userResult[0];
         const updates = [];
 
-        if (!user.full_name && shippingInfo.full_name)
+        if (user.full_name !== shippingInfo.full_name)
             updates.push(`full_name = :full_name`);
-        if (!user.address && shippingInfo.address)
+        if (user.address !== shippingInfo.address)
             updates.push(`address = :address`);
-        if (!user.phone && shippingInfo.phone)
+        if (user.phone !== shippingInfo.phone)
             updates.push(`phone = :phone`);
 
         if (updates.length > 0) {
