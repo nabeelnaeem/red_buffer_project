@@ -90,6 +90,13 @@ export const getUserNameFromToken = (req) => {
     return username;
 }
 
+export const getUserIdFromToken = (req) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader.split(' ')[1];
+    const user_id = jwt.decode(token).user_id;
+    return user_id;
+}
+
 export const isUserNameOrToken = (req) => {
     const { userInfo } = req.body;
     if (jwt.decode(userInfo)) {

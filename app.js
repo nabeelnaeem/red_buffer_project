@@ -2,7 +2,8 @@ import express from 'express';
 import { sequelize } from './config/db.js';
 import cors from 'cors';
 import authRoutes from './app_modules/auth/auth_route.js';
-import productRoutes from './app_modules/product/product_route.js'
+import productRoutes from './app_modules/product/product_route.js';
+import orderRoutes from './app_modules/order/order_route.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -18,6 +19,7 @@ app.use(express.json());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/orders', orderRoutes);
 
 // DB Connection & Server Start
 sequelize.authenticate()
