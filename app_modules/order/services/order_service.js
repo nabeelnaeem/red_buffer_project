@@ -112,11 +112,11 @@ export const placeOrder = async (user_id, cart, shippingInfo, paymentInfo) => {
         const user = userResult[0];
         const updates = [];
 
-        if (!user.full_name && shippingInfo.full_name)
+        if (user.full_name !== shippingInfo.full_name)
             updates.push(`full_name = :full_name`);
-        if (!user.address && shippingInfo.address)
+        if (user.address !== shippingInfo.address)
             updates.push(`address = :address`);
-        if (!user.phone && shippingInfo.phone)
+        if (user.phone !== shippingInfo.phone)
             updates.push(`phone = :phone`);
 
         if (updates.length > 0) {
@@ -213,6 +213,27 @@ export const getOrderDetails = async (order_id) => {
             shipping: shippingData[0] || {},
             payment: paymentData[0] || {}
         };
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const getOrdersByUser = async (user_id) => {
+    try {
+        const [orders] = await sequelize.query(`
+            SELECT o.order_id, o.date AS order_date, o.status AS order_status, o.amount AS total_amount, 
+                s.method AS shipping_method, s.tracking_id, s.status AS shipping_status,
+                p.method AS payment_method, p.status AS payment_status
+            FROM orders o
+            LEFT JOIN shippings s ON o.order_id = s.order_id
+            LEFT JOIN payments p ON o.order_id = p.order_id
+            WHERE o.user_id = :user_id
+            ORDER BY o.date DESC
+        `, {
+            replacements: { user_id }
+        });
+
+        return orders;
     } catch (err) {
         throw err;
     }
