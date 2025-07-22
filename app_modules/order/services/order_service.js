@@ -217,3 +217,24 @@ export const getOrderDetails = async (order_id) => {
         throw err;
     }
 };
+
+export const getOrdersByUser = async (user_id) => {
+    try {
+        const [orders] = await sequelize.query(`
+            SELECT o.order_id, o.date AS order_date, o.status AS order_status, o.amount AS total_amount, 
+                s.method AS shipping_method, s.tracking_id, s.status AS shipping_status,
+                p.method AS payment_method, p.status AS payment_status
+            FROM orders o
+            LEFT JOIN shippings s ON o.order_id = s.order_id
+            LEFT JOIN payments p ON o.order_id = p.order_id
+            WHERE o.user_id = :user_id
+            ORDER BY o.date DESC
+        `, {
+            replacements: { user_id }
+        });
+
+        return orders;
+    } catch (err) {
+        throw err;
+    }
+};
