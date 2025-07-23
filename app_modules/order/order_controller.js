@@ -44,12 +44,12 @@ export const createOrder = async (req, res) => {
 export const getOrderById = async (req, res) => {
     try {
         const { order_id } = req.params;
-
+        const user_id = getUserIdFromToken(req);
         if (!order_id) {
             return res.status(400).json({ error: ORDER_ID_REQUIRED_ERROR });
         }
 
-        const orderDetails = await getOrderDetails(order_id);
+        const orderDetails = await getOrderDetails(order_id, user_id);
         return res.status(200).json(orderDetails);
 
     } catch (error) {
