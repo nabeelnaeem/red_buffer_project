@@ -149,27 +149,27 @@ export const placeOrder = async (user_id, cart, shippingInfo, paymentInfo) => {
     }
 };
 
-export const getOrderDetails = async (order_id) => {
+export const getOrderDetails = async (order_id, user_id) => {
     try {
         const [orderData] = await sequelize.query(`
             SELECT o.order_id, o.date AS order_date, o.status AS order_status, o.amount AS total_amount,
                     u.user_id, u.username, u.email, u.full_name, u.phone, u.address 
             FROM orders o
             JOIN users u ON o.user_id = u.user_id
-            WHERE o.order_id = :order_id
+            WHERE o.order_id = :order_id AND o.user_id = :user_id
         `, {
-            replacements: { order_id }
+            replacements: { order_id, user_id }
         });
 
         if (!orderData.length) {
-            throw new Error('Order not found');
+            throw new Error('Order not found or access denied');
         }
 
         const order = orderData[0];
 
         // Fetch Order Items
         const [items] = await sequelize.query(`
-            SELECT oi.product_id, p.name AS product_name, p.price, oi.quantity, oi.amount
+            SELECT oi.product_id, p.name AS product_name, p.price, p.image_url, oi.quantity, oi.amount
             FROM order_item oi
             JOIN products p ON oi.product_id = p.product_id
             WHERE oi.order_id = :order_id

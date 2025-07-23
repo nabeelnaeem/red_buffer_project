@@ -4,6 +4,7 @@ import cors from 'cors';
 import authRoutes from './app_modules/auth/auth_route.js';
 import productRoutes from './app_modules/product/product_route.js';
 import orderRoutes from './app_modules/order/order_route.js';
+import reviewRoutes from './app_modules/review/review_route.js'
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 // DB Connection & Server Start
 sequelize.authenticate()
