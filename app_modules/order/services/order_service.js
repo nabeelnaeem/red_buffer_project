@@ -169,7 +169,7 @@ export const getOrderDetails = async (order_id) => {
 
         // Fetch Order Items
         const [items] = await sequelize.query(`
-            SELECT oi.product_id, p.name AS product_name, p.price, oi.quantity, oi.amount
+            SELECT oi.product_id, p.name AS product_name, p.price, p.image_url, oi.quantity, oi.amount
             FROM order_item oi
             JOIN products p ON oi.product_id = p.product_id
             WHERE oi.order_id = :order_id
