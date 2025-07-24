@@ -2,6 +2,11 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { createUser, findUserByUsername, isUserAccessRevoked, revokeAccess, getUserNameFromToken, isUserNameOrToken, findUserByEmail, updateUserProfile } from "./services/auth_service.js";
 
+const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
+const ACCESS_TOKEN_EXPIRES_IN = process.env.ACCESS_TOKEN_EXPIRES_IN;
+const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
+const REFRESH_TOKEN_EXPIRES_IN = process.env.REFRESH_TOKEN_EXPIRES_IN;
+
 const USERNAME_ALREADY_EXISTS_MESSAGE = 'User name already exists';
 const EMAIL_ALREADY_EXISTS_MESSAGE = 'Email already exists';
 const USER_CREATED_MESSAGE = 'User created';
@@ -13,6 +18,9 @@ const LOGIN_FAILED_MESSAGE = 'Login failed';
 const PROFILE_UPDATED_MESSAGE = 'Profile updated successfully';
 const PROFILE_UPDATE_FAILED_MESSAGE = 'Failed to update profile';
 const MISSING_FIELD_MESSAGE = 'At least one field (full_name, address, phone) must be provided';
+const REFRESH_TOKEN_MISSING_MESSAGE = 'Refresh token mission';
+const INVALID_REFRESH_TOKEN_MESSAGE = 'Invalid or expired refresh token';
+const LOGOUT_SUCCESS_MESSAGE = 'Logged out successfully';
 
 //Signup 
 export const signup = async (req, res) => {
@@ -54,10 +62,27 @@ export const login = async (req, res) => {
         if (!match)
             return res.status(401).json({ error: INVALID_CREDENTIALS_MESSAGE });
 
-        const token = jwt.sign({ username: user.username, user_id: user.user_id, full_name: user.full_name }, 'abcd', { expiresIn: '10s' });
+        const payload = {
+            username: user.username,
+            user_id: user.user_id,
+            full_name: user.full_name
+        }
+
+        const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRES_IN });
+        const refreshToken = jwt.sign(payload, REFRESH_TOKEN_SECRET, { expiresIn: REFRESH_TOKEN_EXPIRES_IN });
+
+        res.cookie("refreshToken", refreshToken,
+            {
+                httpOnly: true, //Prevent JS Access to this token, prevent XSS attacks
+                secure: false, //In production it should be true, we are working on HTTP for now
+                sameSite: "Strict",
+                maxAge: 7 * 24 * 60 * 60 * 100 //7Days, expects number 
+            }
+        )
+
         return res.json({
             message: SUCCESSFUL_LOGIN_MESSAGE,
-            token,
+            accessToken,
             user: {
                 user_id: user.user_id,
                 username: user.username,
@@ -129,3 +154,32 @@ export const updateProfile = async (req, res) => {
         return res.status(500).json({ error: PROFILE_UPDATE_FAILED_MESSAGE });
     }
 };
+
+//Refresh Token
+export const refreshAccessToken = (req, res) => {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+        return res.status(401).json({ error: REFRESH_TOKEN_MISSING_MESSAGE })
+    }
+
+    try {
+        const decoded = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
+        const payload = {
+            username: decoded.username,
+            user_id: decoded.user_id,
+            full_name: decoded.full_name
+        };
+
+        const newAccessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRES_IN });
+        return res.json({ accessToken: newAccessToken });
+
+    } catch (error) {
+        return res.status(403).json({ error: INVALID_REFRESH_TOKEN_MESSAGE });
+    }
+}
+//Logout to clear refresh token
+export const logout = (req, res) => {
+    res.clearCookie('refreshToken');
+    return res.json({ message: LOGOUT_SUCCESS_MESSAGE })
+}
