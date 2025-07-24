@@ -186,10 +186,11 @@ export const refreshAccessToken = (req, res) => {
 
     try {
         const decoded = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
+        const { username, user_id, full_name } = decoded;
         const payload = {
-            username: decoded.username,
-            user_id: decoded.user_id,
-            full_name: decoded.full_name
+            username,
+            user_id,
+            full_name
         };
 
         const newAccessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRES_IN });
