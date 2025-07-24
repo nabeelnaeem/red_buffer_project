@@ -1,7 +1,9 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createUser, findUserByUsername, isUserAccessRevoked, revokeAccess, getUserNameFromToken, 
-    isUserNameOrToken, findUserByEmail, updateUserProfile, generateAndSendTokens } from "./services/auth_service.js";
+import {
+    createUser, findUserByUsername, isUserAccessRevoked, revokeAccess, getUserNameFromToken,
+    isUserNameOrToken, findUserByEmail, updateUserProfile, generateAndSendTokens
+} from "./services/auth_service.js";
 import ms from 'ms';
 
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
@@ -15,7 +17,7 @@ const COOKIE_HTTP_ONLY = process.env.REFRESH_TOKEN_COOKIE_HTTPONLY === 'true';
 
 const USERNAME_ALREADY_EXISTS_MESSAGE = 'User name already exists';
 const EMAIL_ALREADY_EXISTS_MESSAGE = 'Email already exists';
-const USER_CREATED_MESSAGE = 'User created';
+const SIGNUP_MESSAGE = 'Profile created, login you in';
 const USER_NOT_FOUND_MESSAGE = 'User not found';
 const USER_STATUS_REVOKED_MESSAGE = 'User status is revoked';
 const INVALID_CREDENTIALS_MESSAGE = 'Invalid Credentials';
@@ -44,7 +46,27 @@ export const signup = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await createUser(username, hashedPassword, email);
 
-        res.json({ message: USER_CREATED_MESSAGE, user });
+        const { accessToken, refreshToken } = generateAndSendTokens(res, user, {
+            accessSecret: ACCESS_TOKEN_SECRET,
+            refreshSecret: REFRESH_TOKEN_SECRET,
+            accessExpiresIn: ACCESS_TOKEN_EXPIRES_IN,
+            refreshExpiresIn: REFRESH_TOKEN_EXPIRES_IN,
+            cookieHttpOnly: COOKIE_HTTP_ONLY,
+            cookieSecure: COOKIE_IS_SECURE,
+            cookieSameSite: COOKIE_SAME_SITE_OPTION,
+            cookieMaxAge: COOKIE_MAX_AGE
+        });
+
+        return res.json({
+            message: SIGNUP_MESSAGE,
+            accessToken,
+            user: {
+                user_id: user.user_id,
+                username: user.username,
+                email: user.email,
+                full_name: user.full_name
+            }
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -67,26 +89,21 @@ export const login = async (req, res) => {
         if (!match)
             return res.status(401).json({ error: INVALID_CREDENTIALS_MESSAGE });
 
-        const payload = {
-            username: user.username,
-            user_id: user.user_id,
-            full_name: user.full_name
-        }
+        const { accessToken, refreshToken } = generateAndSendTokens(res, user, {
+            accessSecret: ACCESS_TOKEN_SECRET,
+            refreshSecret: REFRESH_TOKEN_SECRET,
+            accessExpiresIn: ACCESS_TOKEN_EXPIRES_IN,
+            refreshExpiresIn: REFRESH_TOKEN_EXPIRES_IN,
+            cookieHttpOnly: COOKIE_HTTP_ONLY,
+            cookieSecure: COOKIE_IS_SECURE,
+            cookieSameSite: COOKIE_SAME_SITE_OPTION,
+            cookieMaxAge: COOKIE_MAX_AGE
+        });
 
-        const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRES_IN });
-        const refreshToken = jwt.sign(payload, REFRESH_TOKEN_SECRET, { expiresIn: REFRESH_TOKEN_EXPIRES_IN });
-
-        res.cookie("refreshToken", refreshToken,
-            {
-                httpOnly: COOKIE_HTTP_ONLY, //Prevent JS Access to this token, prevent XSS attacks
-                secure: COOKIE_IS_SECURE, //In production it should be true, we are working on HTTP for now
-                sameSite: COOKIE_SAME_SITE_OPTION,
-                maxAge: COOKIE_MAX_AGE // expects number 
-            }
-        )
         return res.json({
             message: SUCCESSFUL_LOGIN_MESSAGE,
             accessToken,
+            refreshToken, // optional — for debugging
             user: {
                 user_id: user.user_id,
                 username: user.username,
