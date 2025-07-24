@@ -1,11 +1,16 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { createUser, findUserByUsername, isUserAccessRevoked, revokeAccess, getUserNameFromToken, isUserNameOrToken, findUserByEmail, updateUserProfile } from "./services/auth_service.js";
+import ms from 'ms';
 
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const ACCESS_TOKEN_EXPIRES_IN = process.env.ACCESS_TOKEN_EXPIRES_IN;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 const REFRESH_TOKEN_EXPIRES_IN = process.env.REFRESH_TOKEN_EXPIRES_IN;
+const COOKIE_MAX_AGE = ms(process.env.REFRESH_TOKEN_COOKIES_EXPIRES_IN);
+const COOKIE_IS_SECURE = process.env.REFRESH_TOKEN_COOKIE_SECURE === 'true';
+const COOKIE_SAME_SITE_OPTION = process.env.REFRESH_TOKEN_COOKIE_SAMESITE || 'Strict';
+const COOKIE_HTTP_ONLY = process.env.REFRESH_TOKEN_COOKIE_HTTPONLY === 'true';
 
 const USERNAME_ALREADY_EXISTS_MESSAGE = 'User name already exists';
 const EMAIL_ALREADY_EXISTS_MESSAGE = 'Email already exists';
@@ -44,7 +49,6 @@ export const signup = async (req, res) => {
     }
 };
 
-
 //Login
 export const login = async (req, res) => {
     const { username, password } = req.body;
@@ -73,13 +77,12 @@ export const login = async (req, res) => {
 
         res.cookie("refreshToken", refreshToken,
             {
-                httpOnly: true, //Prevent JS Access to this token, prevent XSS attacks
-                secure: false, //In production it should be true, we are working on HTTP for now
-                sameSite: "Strict",
-                maxAge: 7 * 24 * 60 * 60 * 100 //7Days, expects number 
+                httpOnly: COOKIE_HTTP_ONLY, //Prevent JS Access to this token, prevent XSS attacks
+                secure: COOKIE_IS_SECURE, //In production it should be true, we are working on HTTP for now
+                sameSite: COOKIE_SAME_SITE_OPTION,
+                maxAge: COOKIE_MAX_AGE // expects number 
             }
         )
-
         return res.json({
             message: SUCCESSFUL_LOGIN_MESSAGE,
             accessToken,
