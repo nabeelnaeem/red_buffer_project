@@ -17,7 +17,7 @@ const COOKIE_HTTP_ONLY = process.env.REFRESH_TOKEN_COOKIE_HTTPONLY === 'true';
 
 const USERNAME_ALREADY_EXISTS_MESSAGE = 'User name already exists';
 const EMAIL_ALREADY_EXISTS_MESSAGE = 'Email already exists';
-const SIGNUP_MESSAGE = 'Profile created, login you in';
+const SIGNUP_MESSAGE = 'Profile created, logging you in';
 const USER_NOT_FOUND_MESSAGE = 'User not found';
 const USER_STATUS_REVOKED_MESSAGE = 'User status is revoked';
 const INVALID_CREDENTIALS_MESSAGE = 'Invalid Credentials';
@@ -56,15 +56,15 @@ export const signup = async (req, res) => {
             cookieSameSite: COOKIE_SAME_SITE_OPTION,
             cookieMaxAge: COOKIE_MAX_AGE
         });
-
+        const { user_id, username, email, full_name } = user;
         return res.json({
             message: SIGNUP_MESSAGE,
             accessToken,
             user: {
-                user_id: user.user_id,
-                username: user.username,
-                email: user.email,
-                full_name: user.full_name
+                user_id,
+                username,
+                email,
+                full_name
             }
         });
     } catch (error) {
