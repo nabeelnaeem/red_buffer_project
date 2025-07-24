@@ -100,15 +100,15 @@ export const login = async (req, res) => {
             cookieMaxAge: COOKIE_MAX_AGE
         });
 
+        const { user_id, username, email, full_name } = user;
         return res.json({
             message: SUCCESSFUL_LOGIN_MESSAGE,
             accessToken,
-            refreshToken, // optional — for debugging
             user: {
-                user_id: user.user_id,
-                username: user.username,
-                email: user.email,
-                full_name: user.full_name
+                user_id,
+                username,
+                email,
+                full_name
             }
         });
     } catch (error) {
