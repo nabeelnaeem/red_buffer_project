@@ -10,6 +10,7 @@ export const createUser = async (username, password, email) => {
     const query = `
     INSERT INTO "users" (user_id, username, password, email, full_name, address, phone, is_revoked, "createdAt", "updatedAt")
     VALUES ( gen_random_uuid(), :username, :password, :email, :full_name, :address, :phone, :is_revoked, NOW(), NOW())
+    RETURNING user_id, username, email, full_name
   `;
 
     const [result] = await sequelize.query(query, {
@@ -60,7 +61,7 @@ export const isUserAccessRevoked = async (username) => {
         replacements: { username, is_revoked: true },
     });
     return result[0];
-}
+};
 export const revokeAccess = async (username) => {
     const userExists = await findUserByUsername(username);
     if (!userExists) {
@@ -81,21 +82,21 @@ export const revokeAccess = async (username) => {
     else {
         return USER_NOT_FOUND_MESSAGE;
     }
-}
+};
 
 export const getUserNameFromToken = (req) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader.split(' ')[1];
     const username = jwt.decode(token).username;
     return username;
-}
+};
 
 export const getUserIdFromToken = (req) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader.split(' ')[1];
     const user_id = jwt.decode(token).user_id;
     return user_id;
-}
+};
 
 export const isUserNameOrToken = (req) => {
     const { userInfo } = req.body;
@@ -105,4 +106,29 @@ export const isUserNameOrToken = (req) => {
     else {
         return userInfo;
     }
-}
+};
+
+export const generateAndSendTokens = (res, user, options) => {
+    const payload = {
+        username: user.username,
+        user_id: user.user_id,
+        full_name: user.full_name
+    };
+
+    const accessToken = jwt.sign(payload, options.accessSecret, {
+        expiresIn: options.accessExpiresIn
+    });
+
+    const refreshToken = jwt.sign(payload, options.refreshSecret, {
+        expiresIn: options.refreshExpiresIn
+    });
+
+    res.cookie("refreshToken", refreshToken,{
+        httpOnly: options.cookieHttpOnly,
+        secure: options.cookieSecure,
+        sameSite: options.cookieSameSite,
+        maxAge: options.cookieMaxAge
+    });
+
+    return {accessToken, refreshToken};
+};
