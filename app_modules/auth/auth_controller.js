@@ -56,7 +56,7 @@ export const signup = async (req, res) => {
             cookieSameSite: COOKIE_SAME_SITE_OPTION,
             cookieMaxAge: COOKIE_MAX_AGE
         });
-        const { user_id, username, email, full_name } = user;
+        const { user_id, full_name } = user;
         return res.json({
             message: SIGNUP_MESSAGE,
             accessToken,
@@ -100,7 +100,7 @@ export const login = async (req, res) => {
             cookieMaxAge: COOKIE_MAX_AGE
         });
 
-        const { user_id, username, email, full_name } = user;
+        const { user_id, email, full_name } = user;
         return res.json({
             message: SUCCESSFUL_LOGIN_MESSAGE,
             accessToken,
