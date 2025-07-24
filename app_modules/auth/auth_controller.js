@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createUser, findUserByUsername, isUserAccessRevoked, revokeAccess, getUserNameFromToken, isUserNameOrToken, findUserByEmail, updateUserProfile } from "./services/auth_service.js";
+import { createUser, findUserByUsername, isUserAccessRevoked, revokeAccess, getUserNameFromToken, 
+    isUserNameOrToken, findUserByEmail, updateUserProfile, generateAndSendTokens } from "./services/auth_service.js";
 import ms from 'ms';
 
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;

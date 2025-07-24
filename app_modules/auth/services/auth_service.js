@@ -10,6 +10,7 @@ export const createUser = async (username, password, email) => {
     const query = `
     INSERT INTO "users" (user_id, username, password, email, full_name, address, phone, is_revoked, "createdAt", "updatedAt")
     VALUES ( gen_random_uuid(), :username, :password, :email, :full_name, :address, :phone, :is_revoked, NOW(), NOW())
+    RETURNING user_id, username, email, full_name
   `;
 
     const [result] = await sequelize.query(query, {
