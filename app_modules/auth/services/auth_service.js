@@ -108,6 +108,14 @@ export const isUserNameOrToken = (req) => {
     }
 };
 
+export const getEmailByUserId = async (userId) => {
+    const query = `SELECT email FROM "users" WHERE user_id = :userId`
+    const [result] = await sequelize.query(query, {
+        replacements: { userId },
+    });
+    return result[0];
+}
+
 export const generateAndSendTokens = (res, user, options) => {
     const payload = {
         username: user.username,
@@ -123,12 +131,12 @@ export const generateAndSendTokens = (res, user, options) => {
         expiresIn: options.refreshExpiresIn
     });
 
-    res.cookie("refreshToken", refreshToken,{
+    res.cookie("refreshToken", refreshToken, {
         httpOnly: options.cookieHttpOnly,
         secure: options.cookieSecure,
         sameSite: options.cookieSameSite,
         maxAge: options.cookieMaxAge
     });
 
-    return {accessToken, refreshToken};
+    return { accessToken, refreshToken };
 };
