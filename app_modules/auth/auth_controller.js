@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {
-    createUser, findUserByUsername, isUserAccessRevoked, revokeAccess, getUserNameFromToken,
-    isUserNameOrToken, findUserByEmail, updateUserProfile, generateAndSendTokens
+    createUser, revokeAccess, getUserNameFromToken,
+    isUserNameOrToken, updateUserProfile, generateAndSendTokens, findUserDetails
 } from "./services/auth_service.js";
 import ms from 'ms';
 
@@ -35,11 +35,11 @@ export const signup = async (req, res) => {
     const { username, password, email } = req.body;
 
     try {
-        const isExistingUserName = await findUserByUsername(username);
+        const isExistingUserName = await findUserDetails({ field: 'username', value: username });
         if (isExistingUserName)
             return res.status(400).json({ error: USERNAME_ALREADY_EXISTS_MESSAGE });
 
-        const isExistingEmail = await findUserByEmail(email)
+        const isExistingEmail = await findUserDetails({ field: 'email', value: email })
         if (isExistingEmail)
             return res.status(400).json({ error: EMAIL_ALREADY_EXISTS_MESSAGE });
 
@@ -77,17 +77,19 @@ export const login = async (req, res) => {
     const { username, password } = req.body;
 
     try {
-        const user = await findUserByUsername(username);
+        const user = await findUserDetails({ field: 'username', value: username });
         if (!user)
             return res.status(404).json({ error: USER_NOT_FOUND_MESSAGE });
 
-        const revokedUser = await isUserAccessRevoked(username);
+        const revokedUser = await findUserDetails({ field: 'username', value: username, isRevoked: true });
         if (revokedUser)
             return res.status(403).json({ error: USER_STATUS_REVOKED_MESSAGE });
 
         const match = await bcrypt.compare(password, user.password);
-        if (!match)
+        if (!match) {
+            res.setHeader('Content-Type', 'application/json');
             return res.status(401).json({ error: INVALID_CREDENTIALS_MESSAGE });
+        }
 
         const { accessToken, refreshToken } = generateAndSendTokens(res, user, {
             accessSecret: ACCESS_TOKEN_SECRET,
@@ -136,12 +138,12 @@ export const revoke = async (req, res) => {
 //Profile (Protected)
 export const profile = async (req, res) => {
     const username = getUserNameFromToken(req);
-    const revokedUser = await isUserAccessRevoked(username);
+    const revokedUser = await findUserDetails({ field: 'username', value: username, isRevoked: true });
     if (revokedUser) {
         return res.json({ message: `${username}, ${USER_STATUS_REVOKED_MESSAGE}` });
     }
     else {
-        const user = await findUserByUsername(username);
+        const user = await findUserDetails({ field: 'username', value: username });
         if (!user) {
             return res.json({ message: USER_NOT_FOUND_MESSAGE });
         }

@@ -38,30 +38,6 @@ export const updateUserProfile = async (username, full_name, address, phone) => 
     return result[0];
 };
 
-
-export const findUserByUsername = async (username) => {
-    const query = `SELECT * FROM "users" WHERE username = :username AND "deletedAt" IS NULL`;
-    const [result] = await sequelize.query(query, {
-        replacements: { username },
-    });
-    return result[0];
-};
-
-export const findUserByEmail = async (email) => {
-    const query = `SELECT * FROM "users" WHERE email = :email AND "deletedAt" IS NULL`;
-    const [result] = await sequelize.query(query, {
-        replacements: { email },
-    });
-    return result[0];
-};
-
-export const isUserAccessRevoked = async (username) => {
-    const query = `SELECT * FROM "users" WHERE username = :username AND is_revoked = :is_revoked`;
-    const [result] = await sequelize.query(query, {
-        replacements: { username, is_revoked: true },
-    });
-    return result[0];
-};
 export const revokeAccess = async (username) => {
     const userExists = await findUserByUsername(username);
     if (!userExists) {
@@ -108,13 +84,6 @@ export const isUserNameOrToken = (req) => {
     }
 };
 
-export const getEmailByUserId = async (userId) => {
-    const query = `SELECT email FROM "users" WHERE user_id = :userId`
-    const [result] = await sequelize.query(query, {
-        replacements: { userId },
-    });
-    return result[0];
-}
 
 export const generateAndSendTokens = (res, user, options) => {
     const payload = {
@@ -140,3 +109,30 @@ export const generateAndSendTokens = (res, user, options) => {
 
     return { accessToken, refreshToken };
 };
+
+export const findUserDetails = async ({
+    field,
+    value,
+    select = '*',
+    includeSoftDelete = true,
+    isRevoked = null,
+}) => {
+    let query = `SELECT ${select} FROM "users" WHERE "${field}" = :value`;
+    const replacements = { value };
+
+    if (includeSoftDelete) {
+        query += ` AND "deletedAt" IS NULL`;
+    }
+
+    if (isRevoked !== null) {
+        query += ` AND "is_revoked" = :isRevoked`;
+        replacements.isRevoked = isRevoked;
+    }
+
+    const [result] = await sequelize.query(query, {
+        replacements,
+    });
+
+    return result[0];
+};
+
