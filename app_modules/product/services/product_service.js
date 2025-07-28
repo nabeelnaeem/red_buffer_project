@@ -19,7 +19,7 @@ export const getAllProducts = async ({
 
     let baseQuery = `
         FROM ${TABLE_NAME} p
-        JOIN categories c ON p.category_id = c.category_id
+        LEFT JOIN categories c ON p.category_id = c.category_id
         LEFT JOIN reviews r ON p.product_id = r.product_id
         WHERE p."deletedAt" IS NULL
     `;
@@ -75,7 +75,7 @@ export const getProductById = async (product_id) => {
             COALESCE(ROUND(AVG(r.rating), 1), 0) AS rating,
             COUNT(r.rating) AS rating_count
         FROM ${TABLE_NAME} p
-        JOIN categories c ON p.category_id = c.category_id
+        LEFT JOIN categories c ON p.category_id = c.category_id
         LEFT JOIN reviews r ON p.product_id = r.product_id
         WHERE p.product_id = :product_id AND p."deletedAt" IS NULL
         GROUP BY p.product_id, c.name
@@ -97,7 +97,7 @@ export const getProductById = async (product_id) => {
             r."updatedAt",
             u.full_name
         FROM reviews r
-        JOIN users u ON r.user_id = u.user_id
+        LEFT JOIN users u ON r.user_id = u.user_id
         WHERE r.product_id = :product_id
         ORDER BY r."createdAt" DESC
     `;

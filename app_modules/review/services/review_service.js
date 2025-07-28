@@ -4,7 +4,7 @@ export const hasPurchasedProduct = async (user_id, product_id) => {
     const query = `
         SELECT 1
         FROM orders o 
-        JOIN order_item oi ON o.order_id = oi.order_id
+        LEFT JOIN order_item oi ON o.order_id = oi.order_id
         WHERE o.user_id = :user_id AND oi.product_id = :product_id
         LIMIT 1
     `;
@@ -48,7 +48,7 @@ export const createProductReview = async (user_id, product_id, order_item_id, ra
             const [rows] = await sequelize.query(`
                 SELECT oi.order_item_id
                 FROM order_item oi
-                JOIN orders o ON o.order_id = oi.order_id
+                LEFT JOIN orders o ON o.order_id = oi.order_id
                 WHERE oi.product_id = :product_id AND o.user_id = :user_id
                 ORDER BY oi."createdAt" DESC
                 LIMIT 1;

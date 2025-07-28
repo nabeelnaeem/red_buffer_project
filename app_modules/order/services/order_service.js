@@ -155,7 +155,7 @@ export const getOrderDetails = async (order_id, user_id) => {
             SELECT o.order_id, o.date AS order_date, o.status AS order_status, o.amount AS total_amount,
                     u.user_id, u.username, u.email, u.full_name, u.phone, u.address 
             FROM orders o
-            JOIN users u ON o.user_id = u.user_id
+            LEFT JOIN users u ON o.user_id = u.user_id
             WHERE o.order_id = :order_id AND o.user_id = :user_id
         `, {
             replacements: { order_id, user_id }
@@ -171,7 +171,7 @@ export const getOrderDetails = async (order_id, user_id) => {
         const [items] = await sequelize.query(`
             SELECT oi.product_id, p.name AS product_name, p.price, p.image_url, oi.quantity, oi.amount
             FROM order_item oi
-            JOIN products p ON oi.product_id = p.product_id
+            LEFT JOIN products p ON oi.product_id = p.product_id
             WHERE oi.order_id = :order_id
         `, {
             replacements: { order_id }
