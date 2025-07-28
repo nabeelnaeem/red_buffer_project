@@ -18,11 +18,10 @@ export const sendOrderConfirmation = async (to, subject, html) => {
     try {
         await transport.sendMail({
             from: sender,
-            to: to,
+            to,
             subject,
             html,
             category: 'Order Confirmation',
-            // sandbox: true, // optional: only for test mode
         });
     } catch (error) {
         console.log('Email send error:', error);

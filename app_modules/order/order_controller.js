@@ -36,7 +36,6 @@ export const createOrder = async (req, res) => {
 
         const result = await placeOrder(user_id, cart, shippingInfo, paymentInfo);
         const userEmail = await getEmailByUserId(user_id);
-        console.log("userEmail", userEmail);
 
         const emailBody = `
         <h2>Thank you for your order!</h2>
