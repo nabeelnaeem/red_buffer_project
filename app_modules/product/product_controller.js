@@ -34,10 +34,12 @@ export const getAllProducts = async (req, res) => {
         const name = req.query.name;
         const sortBy = req.query.sortBy;
         const sortOrder = req.query.sortOrder;
+        const stock = req.query.stock;
+        const rating = parseFloat(req.query.rating);
         let page = parseInt(req.query.page) || 1;
         let limit = parseInt(req.query.limit) || 10;
 
-        const products = await productService.getAllProducts({ name, sortBy, sortOrder, page, limit });
+        const products = await productService.getAllProducts({ name, sortBy, sortOrder, page, limit, stock, rating });
         if (products)
             return res.json(products);
     } catch (error) {
