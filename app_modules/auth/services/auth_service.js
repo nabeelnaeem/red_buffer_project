@@ -38,30 +38,6 @@ export const updateUserProfile = async (username, full_name, address, phone) => 
     return result[0];
 };
 
-
-export const findUserByUsername = async (username) => {
-    const query = `SELECT * FROM "users" WHERE username = :username AND "deletedAt" IS NULL`;
-    const [result] = await sequelize.query(query, {
-        replacements: { username },
-    });
-    return result[0];
-};
-
-export const findUserByEmail = async (email) => {
-    const query = `SELECT * FROM "users" WHERE email = :email AND "deletedAt" IS NULL`;
-    const [result] = await sequelize.query(query, {
-        replacements: { email },
-    });
-    return result[0];
-};
-
-export const isUserAccessRevoked = async (username) => {
-    const query = `SELECT * FROM "users" WHERE username = :username AND is_revoked = :is_revoked`;
-    const [result] = await sequelize.query(query, {
-        replacements: { username, is_revoked: true },
-    });
-    return result[0];
-};
 export const revokeAccess = async (username) => {
     const userExists = await findUserByUsername(username);
     if (!userExists) {
@@ -108,6 +84,7 @@ export const isUserNameOrToken = (req) => {
     }
 };
 
+
 export const generateAndSendTokens = (res, user, options) => {
     const payload = {
         username: user.username,
@@ -123,12 +100,39 @@ export const generateAndSendTokens = (res, user, options) => {
         expiresIn: options.refreshExpiresIn
     });
 
-    res.cookie("refreshToken", refreshToken,{
+    res.cookie("refreshToken", refreshToken, {
         httpOnly: options.cookieHttpOnly,
         secure: options.cookieSecure,
         sameSite: options.cookieSameSite,
         maxAge: options.cookieMaxAge
     });
 
-    return {accessToken, refreshToken};
+    return { accessToken, refreshToken };
 };
+
+export const findUserDetails = async ({
+    field,
+    value,
+    select = '*',
+    includeSoftDelete = true,
+    isRevoked = null,
+}) => {
+    let query = `SELECT ${select} FROM "users" WHERE "${field}" = :value`;
+    const replacements = { value };
+
+    if (includeSoftDelete) {
+        query += ` AND "deletedAt" IS NULL`;
+    }
+
+    if (isRevoked !== null) {
+        query += ` AND "is_revoked" = :isRevoked`;
+        replacements.isRevoked = isRevoked;
+    }
+
+    const [result] = await sequelize.query(query, {
+        replacements,
+    });
+
+    return result[0];
+};
+

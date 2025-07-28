@@ -1,5 +1,6 @@
 import { placeOrder, getOrderDetails, getOrdersByUser } from "./services/order_service.js"
-import { getUserIdFromToken } from '../auth/services/auth_service.js';
+import { getUserIdFromToken, findUserDetails } from '../auth/services/auth_service.js';
+import { sendOrderConfirmation } from "../communication/mail_service.js";
 
 // Error messages
 const UNAUTHORIZED_ERROR = 'Unauthorized: user ID missing';
@@ -34,8 +35,19 @@ export const createOrder = async (req, res) => {
         }
 
         const result = await placeOrder(user_id, cart, shippingInfo, paymentInfo);
+        const userEmail = await findUserDetails({ field: 'user_id', value: user_id, select: 'email' });
 
+        const emailBody = `
+        <h2>Thank you for your order!</h2>
+        <p>Your order ${result.order_id} has been placed successfully.</p>
+        <p>Total Items: ${cart.length}</p>
+        <p>Tracking ID: ${result.tracking_id}</p>
+        `;
+
+        await sendOrderConfirmation(userEmail.email, "Order Confirmation", emailBody);
         return res.status(201).json(result);
+
+
     } catch (err) {
         return res.status(500).json({ error: PLACE_ORDER_ERROR, detail: err.message });
     }
