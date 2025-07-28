@@ -44,7 +44,7 @@ export const createOrder = async (req, res) => {
         <p>Tracking ID: ${result.tracking_id}</p>
         `;
 
-        await sendOrderConfirmation(userEmail.email, "Order Confirmation", emailBody);
+        sendOrderConfirmation(userEmail.email, "Order Confirmation", emailBody);
         return res.status(201).json(result);
 
 
