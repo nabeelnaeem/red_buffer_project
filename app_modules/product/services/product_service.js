@@ -8,6 +8,8 @@ export const getAllProducts = async ({
     sortOrder = 'asc',
     page = 1,
     limit = 10,
+    stock,
+    rating
 }) => {
     const allowedSortFields = ['name', 'price', 'stock', 'createdAt', 'rating'];
     const sortField = allowedSortFields.includes(sortBy) ? sortBy : 'name';
@@ -16,35 +18,44 @@ export const getAllProducts = async ({
     const replacements = { limit, offset };
 
     let baseQuery = `
-    FROM ${TABLE_NAME} p
-    JOIN categories c ON p.category_id = c.category_id
-    LEFT JOIN reviews r ON p.product_id = r.product_id
-    WHERE p."deletedAt" IS NULL
-  `;
+        FROM ${TABLE_NAME} p
+        LEFT JOIN categories c ON p.category_id = c.category_id
+        LEFT JOIN reviews r ON p.product_id = r.product_id
+        WHERE p."deletedAt" IS NULL
+    `;
 
     if (name) {
         baseQuery += ` AND p.name ILIKE :name`;
         replacements.name = `%${name.toLowerCase()}%`;
     }
-    // ORDER BY ${sortField === 'rating' ? 'rating' : `"${sortField}"`} ${sortDirection}
-    const query = `
-    SELECT * FROM (
-      SELECT 
-        p.*, 
-        c.name AS category_name,
-        COALESCE(ROUND(AVG(r.rating), 1), 0) AS rating,
-        COUNT(r.rating) AS rating_count
-      ${baseQuery}
-      GROUP BY p.product_id, c.name
-    ) AS sub
-    ORDER BY ${sortField} ${sortDirection}
-    LIMIT :limit OFFSET :offset
-  `;
 
-    const countQuery = `
-    SELECT COUNT(DISTINCT p.product_id) AS total
-    ${baseQuery}
-  `;
+    if (stock === 'in') {
+        baseQuery += ` AND p.stock > 0`;
+    } else if (stock === 'out') {
+        baseQuery += ` AND p.stock = 0`;
+    }
+
+    if (rating && !isNaN(rating)) {
+        baseQuery += ` GROUP BY p.product_id, c.name HAVING ROUND(AVG(r.rating), 1) >= :rating`;
+        replacements.rating = rating;
+    } else {
+        baseQuery += ` GROUP BY p.product_id, c.name`;
+    }
+
+    const query = `
+        SELECT * FROM (
+            SELECT 
+                p.*, 
+                c.name AS category_name,
+                COALESCE(ROUND(AVG(r.rating), 1), 0) AS rating,
+                COUNT(r.rating) AS rating_count
+            ${baseQuery}
+        ) AS sub
+        ORDER BY ${sortField} ${sortDirection}
+        LIMIT :limit OFFSET :offset
+    `;
+
+    const countQuery = `SELECT COUNT(*) AS total FROM (${query.replace('LIMIT :limit OFFSET :offset', '')}) AS count_sub`;
 
     const [[{ total }]] = await sequelize.query(countQuery, { replacements });
     const [products] = await sequelize.query(query, { replacements });
@@ -56,7 +67,6 @@ export const getAllProducts = async ({
     };
 };
 
-
 export const getProductById = async (product_id) => {
     const productQuery = `
         SELECT 
@@ -65,7 +75,7 @@ export const getProductById = async (product_id) => {
             COALESCE(ROUND(AVG(r.rating), 1), 0) AS rating,
             COUNT(r.rating) AS rating_count
         FROM ${TABLE_NAME} p
-        JOIN categories c ON p.category_id = c.category_id
+        LEFT JOIN categories c ON p.category_id = c.category_id
         LEFT JOIN reviews r ON p.product_id = r.product_id
         WHERE p.product_id = :product_id AND p."deletedAt" IS NULL
         GROUP BY p.product_id, c.name
@@ -87,7 +97,7 @@ export const getProductById = async (product_id) => {
             r."updatedAt",
             u.full_name
         FROM reviews r
-        JOIN users u ON r.user_id = u.user_id
+        LEFT JOIN users u ON r.user_id = u.user_id
         WHERE r.product_id = :product_id
         ORDER BY r."createdAt" DESC
     `;
