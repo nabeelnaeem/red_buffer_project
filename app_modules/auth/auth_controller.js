@@ -140,7 +140,10 @@ export const profile = async (req, res) => {
     const username = getUserNameFromToken(req);
     const revokedUser = await findUserDetails({ field: 'username', value: username, isRevoked: true });
     if (revokedUser) {
-        return res.json({ message: `${username}, ${USER_STATUS_REVOKED_MESSAGE}` });
+        return res.status(403).json({
+            error: USER_STATUS_REVOKED_MESSAGE,
+            is_revoked: true
+        });
     }
     else {
         const user = await findUserDetails({ field: 'username', value: username });
@@ -192,7 +195,10 @@ export const refreshAccessToken = async (req, res) => {
 
         const revokedUser = await findUserDetails({ field: 'username', value: username, isRevoked: true });
         if (revokedUser) {
-            return res.json({ message: `${username}, ${USER_STATUS_REVOKED_MESSAGE}` });
+            return res.status(403).json({
+                error: USER_STATUS_REVOKED_MESSAGE,
+                is_revoked: true
+            });
         }
 
         const payload = {
@@ -200,7 +206,6 @@ export const refreshAccessToken = async (req, res) => {
             user_id,
             full_name
         };
-
 
         const newAccessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRES_IN });
         return res.json({ accessToken: newAccessToken });
