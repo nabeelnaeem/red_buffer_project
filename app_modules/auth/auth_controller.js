@@ -140,7 +140,10 @@ export const profile = async (req, res) => {
     const username = getUserNameFromToken(req);
     const revokedUser = await findUserDetails({ field: 'username', value: username, isRevoked: true });
     if (revokedUser) {
-        return res.json({ message: `${username}, ${USER_STATUS_REVOKED_MESSAGE}` });
+        return res.status(403).json({
+            error: USER_STATUS_REVOKED_MESSAGE,
+            is_revoked: true
+        });
     }
     else {
         const user = await findUserDetails({ field: 'username', value: username });
@@ -179,7 +182,7 @@ export const updateProfile = async (req, res) => {
 };
 
 //Refresh Token
-export const refreshAccessToken = (req, res) => {
+export const refreshAccessToken = async (req, res) => {
     const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
@@ -189,6 +192,15 @@ export const refreshAccessToken = (req, res) => {
     try {
         const decoded = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
         const { username, user_id, full_name } = decoded;
+
+        const revokedUser = await findUserDetails({ field: 'username', value: username, isRevoked: true });
+        if (revokedUser) {
+            return res.status(403).json({
+                error: USER_STATUS_REVOKED_MESSAGE,
+                is_revoked: true
+            });
+        }
+
         const payload = {
             username,
             user_id,

@@ -39,12 +39,12 @@ export const updateUserProfile = async (username, full_name, address, phone) => 
 };
 
 export const revokeAccess = async (username) => {
-    const userExists = await findUserByUsername(username);
+    const userExists = await findUserDetails({ field: 'username', value: username });
     if (!userExists) {
         return USER_NOT_EXISTS_MESSAGE;
     }
 
-    const revokedUser = await isUserAccessRevoked(username);
+    const revokedUser = await findUserDetails({ field: 'username', value: username, isRevoked: true });
     if (revokedUser)
         return STATUS_ALREADY_REVOKED_MESSAGE;
 
