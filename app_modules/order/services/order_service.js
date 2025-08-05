@@ -12,7 +12,7 @@ export const placeOrder = async (user_id, cart, shippingInfo, paymentInfo) => {
              RETURNING *`,
             { replacements: { order_id, user_id }, transaction: t }
         );
-
+        const orderDate = orderResult[0]?.date;
         let productTotal = 0;
 
         for (const item of cart) {
@@ -140,7 +140,8 @@ export const placeOrder = async (user_id, cart, shippingInfo, paymentInfo) => {
             success: true,
             order_id,
             tracking_id,
-            total
+            total,
+            order_date: orderDate
         };
 
     } catch (err) {
