@@ -38,14 +38,38 @@ export const createOrder = async (req, res) => {
         const userEmail = await findUserDetails({ field: 'user_id', value: user_id, select: 'email' });
 
         const emailBody = `
-        <h2>Thank you for your order!</h2>
-        <p>Your order ${result.order_id} has been placed successfully.</p>
-        <p>Total Items: ${cart.length}</p>
-        <p>Total Amount: ${result.total}</p>
-        <p>Tracking ID: ${result.tracking_id}</p>
-        `;
+            <div style="font-family: Arial, sans-serif; color: #333; padding: 20px;">
+                <h2 style="color: #4CAF50;">Thank you for your order!</h2>
+                <p style="font-size: 16px;">Your order <strong style="color: #555;">ORD-${result.order_id.slice(0, 8).toUpperCase()}</strong> has been placed successfully.</p>
+                
+                <table style="width: 100%; max-width: 500px; border-collapse: collapse; margin: 20px 0;">
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #eee;"><strong>Total Items:</strong></td>
+                    <td style="padding: 10px; border: 1px solid #eee;">${cart.length}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #eee;"><strong>Total Amount:</strong></td>
+                    <td style="padding: 10px; border: 1px solid #eee;">Rs ${result.total}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #eee;"><strong>Tracking ID:</strong></td>
+                    <td style="padding: 10px; border: 1px solid #eee;">${result.tracking_id}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #eee;"><strong>Order Date:</strong></td>
+                    <td style="padding: 10px; border: 1px solid #eee;">${new Date(result.order_date).toLocaleString()}</td>
+                </tr>
+                </table>
 
-        // sendOrderConfirmation(userEmail.email, "Order Confirmation", emailBody);
+                <p style="font-size: 14px;">We will notify you once your order is shipped.</p>
+                <p style="font-size: 14px;">If you have any questions, feel free to contact our support.</p>
+                
+                <p style="margin-top: 30px; font-size: 12px; color: #888;">This is an automated message. Please do not reply.</p>
+            </div>
+            `;
+
+
+        sendOrderConfirmation(userEmail.email, "Order Confirmation", emailBody);
         return res.status(201).json(result);
 
 
